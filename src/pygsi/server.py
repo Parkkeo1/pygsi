@@ -1,3 +1,4 @@
+import json
 import logging
 from collections.abc import Callable, Coroutine
 from typing import Any
@@ -142,6 +143,10 @@ class GSIServer:
         async def receive(request: Request) -> JSONResponse:
             try:
                 body = await request.json()
+                if logger.isEnabledFor(logging.DEBUG):
+                    logger.debug(
+                        "Raw payload:\n%s", json.dumps(body, indent=2)
+                    )
                 payload = GSIPayload.model_validate(body)
                 await self._handle_payload(payload)
             except Exception as e:
