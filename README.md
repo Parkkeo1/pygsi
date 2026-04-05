@@ -30,7 +30,7 @@ uv sync --group dev
 
 ## CS2 Configuration
 
-Create a file named `gamestate_integration_pygsi.cfg` in your CS2 `cfg/` directory:
+Create a file named `gamestate_integration_pygsi.cfg` in your CS2 cfg directory. Use the `game/csgo/cfg/` path, **not** the legacy `csgo/cfg/` directory:
 
 ```
 Steam/steamapps/common/Counter-Strike Global Offensive/game/csgo/cfg/

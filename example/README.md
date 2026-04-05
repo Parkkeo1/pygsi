@@ -12,7 +12,7 @@ Logs every GSI event to the console while you play CS2.
 
 ### 1. Install the GSI config file
 
-Copy `gamestate_integration_pygsi.cfg` into your CS2 cfg directory:
+Copy `gamestate_integration_pygsi.cfg` into your CS2 cfg directory. Use the `game/csgo/cfg/` path, **not** the legacy `csgo/cfg/` directory:
 
 **macOS:**
 ```
