@@ -66,3 +66,7 @@ mypy is configured with `strict = true`. All functions must have type annotation
 5. Document the event in `README.md`.
 
 Only add events for data that is available to active players (see constraints above).
+
+## Example
+
+`example/` contains a runnable example (`example.py`), a CS2 GSI config file (`gamestate_integration_pygsi.cfg`), and a README with local setup instructions. The example registers all 7 event handlers and logs every event to the console. Default server port is `4213`.
