@@ -17,7 +17,7 @@ from .models import (
     PlayerMatchStats,
     PlayerState,
     RoundState,
-    Weapon,
+
 )
 
 
@@ -91,21 +91,6 @@ class _PlayerMatchStatsPayload(BaseModel):
         return PlayerMatchStats(**self.model_dump())
 
 
-class _WeaponPayload(BaseModel):
-    model_config = ConfigDict(extra="ignore")
-
-    name: str
-    paintkit: str
-    type: str
-    ammo_clip: int | None = None
-    ammo_clip_max: int | None = None
-    ammo_reserve: int | None = None
-    state: str
-
-    def to_public(self) -> Weapon:
-        return Weapon(**self.model_dump())
-
-
 class _PlayerPayload(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
@@ -114,7 +99,6 @@ class _PlayerPayload(BaseModel):
     team: Literal["T", "CT"] | None = None
     activity: str | None = None
     state: _PlayerStatePayload | None = None
-    weapons: dict[str, _WeaponPayload] = {}
     match_stats: _PlayerMatchStatsPayload | None = None
 
     def to_public(self) -> Player | None:
@@ -127,7 +111,6 @@ class _PlayerPayload(BaseModel):
             team=self.team,
             activity=self.activity,
             state=self.state.to_public(),
-            weapons={slot: w.to_public() for slot, w in self.weapons.items()},
             match_stats=self.match_stats.to_public(),
         )
 

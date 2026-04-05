@@ -29,7 +29,7 @@ logging.basicConfig(
     format="%(asctime)s  %(message)s",
     datefmt="%H:%M:%S",
 )
-log = logging.getLogger("pygsi.example")
+log = logging.getLogger(__name__)
 
 # Send debug logs (raw payloads) to a separate file
 _debug_handler = logging.FileHandler("gsi_debug.log")

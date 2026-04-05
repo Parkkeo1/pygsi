@@ -54,7 +54,6 @@ Paste the following contents:
         "round"               "1"
         "player_id"           "1"
         "player_state"        "1"
-        "player_weapons"      "1"
         "player_match_stats"  "1"
     }
 }

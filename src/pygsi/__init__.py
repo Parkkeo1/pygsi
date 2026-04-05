@@ -5,7 +5,6 @@ from .models import (
     PlayerMatchStats,
     PlayerState,
     RoundState,
-    Weapon,
 )
 from .server import GSIServer
 
@@ -17,5 +16,4 @@ __all__ = [
     "PlayerMatchStats",
     "PlayerState",
     "RoundState",
-    "Weapon",
 ]

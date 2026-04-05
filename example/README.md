@@ -90,7 +90,6 @@ The cfg subscribes to these GSI components:
 | `player_id` | Current player's name, SteamID, team |
 | `player_state` | Health, armor, money, round kills, etc. |
 | `player_match_stats` | Total kills, deaths, assists, MVPs, score |
-| `player_weapons` | All weapons and their ammo state |
 | `map` | Map name, mode, phase, team scores |
 | `map_round_wins` | Per-round win conditions |
 | `round` | Round phase, bomb status, winning team |

@@ -40,23 +40,12 @@ class PlayerMatchStats(BaseModel):
     score: int
 
 
-class Weapon(BaseModel):
-    name: str
-    paintkit: str
-    type: str
-    ammo_clip: int | None = None
-    ammo_clip_max: int | None = None
-    ammo_reserve: int | None = None
-    state: str
-
-
 class Player(BaseModel):
     steamid: str
     name: str
     team: Literal["T", "CT"]
     activity: str | None = None
     state: PlayerState
-    weapons: dict[str, Weapon] = {}
     match_stats: PlayerMatchStats
 
 
