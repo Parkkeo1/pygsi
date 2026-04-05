@@ -43,6 +43,7 @@ All handlers receive `(old, new)` typed slices of state. `old` is `None` if no p
 | `on_bomb_exploded` | `round.bomb` → `exploded` | `(RoundState \| None, RoundState)` |
 | `on_local_player_kill` | `player.match_stats.kills` increases | `(PlayerMatchStats \| None, PlayerMatchStats)` |
 | `on_local_player_death` | `player.state.health` → `0` | `(PlayerState \| None, PlayerState)` |
+| `on_state_update` | Every valid payload | `(GameState \| None, GameState)` |
 
 Kill victim information is not available — CS2 does not expose it to active players.
 
@@ -67,6 +68,8 @@ mypy is configured with `strict = true`. All functions must have type annotation
 
 Only add events for data that is available to active players (see constraints above).
 
-## Example
+## Examples
 
-`example/` contains a runnable example (`example.py`), a CS2 GSI config file (`gamestate_integration_pygsi.cfg`), and a README with local setup instructions. The example registers all 7 event handlers and logs every event to the console. Default server port is `4213`.
+`example/` contains runnable examples and a GSI config file with a README for local setup:
+- `example.py` — registers all event handlers and logs every event to the console.
+- `capture.py` — records every payload as JSON to a local DuckDB database using `on_state_update`.

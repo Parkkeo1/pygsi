@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 Handler = Callable[..., Coroutine[Any, Any, None]]
 
 # Union of all state slices passed to event handlers
-_Slice = RoundState | PlayerMatchStats | PlayerState
+_Slice = GameState | RoundState | PlayerMatchStats | PlayerState
 
 
 class GSIServer:
@@ -47,6 +47,7 @@ class GSIServer:
             "on_bomb_exploded": [],
             "on_local_player_kill": [],
             "on_local_player_death": [],
+            "on_state_update": [],
         }
         self._app = self._build_app()
 
@@ -114,6 +115,14 @@ class GSIServer:
         self._handlers["on_local_player_death"].append(fn)
         return fn
 
+    def on_state_update(self, fn: Handler) -> Handler:
+        """Fires on every valid payload after state is stored.
+
+        Handler signature: async def handler(old: GameState | None, new: GameState)
+        """
+        self._handlers["on_state_update"].append(fn)
+        return fn
+
     # --- Server ---
 
     def run(self) -> None:
@@ -150,6 +159,7 @@ class GSIServer:
         await self._fire_events(prev_state, self._state)
 
     async def _fire_events(self, prev: GameState | None, curr: GameState) -> None:
+        await self._dispatch("on_state_update", prev, curr)
         await self._check_round_events(prev, curr)
         await self._check_bomb_events(prev, curr)
         await self._check_player_events(prev, curr)

@@ -176,6 +176,15 @@ async def handler(old: PlayerMatchStats | None, new: PlayerMatchStats) -> None: 
 async def handler(old: PlayerState | None, new: PlayerState) -> None: ...
 ```
 
+#### Full state updates
+
+Fires on every valid payload with the complete `GameState`.
+
+```python
+@gsi.on_state_update
+async def handler(old: GameState | None, new: GameState) -> None: ...
+```
+
 
 ### Data Types
 
