@@ -1,0 +1,44 @@
+[build-system]
+requires = ["uv_build>=0.11.3,<0.12"]
+build-backend = "uv_build"
+
+[project]
+name = "pygsi"
+version = "0.1.0"
+description = "A Python library for handling live Game State Integration data from CS2"
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi>=0.100.0",
+    "pydantic>=2.0.0",
+    "uvicorn>=0.20.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.0",
+    "mypy>=1.0.0",
+]
+
+[tool.uv.build-backend]
+module-root = "src"
+
+[tool.ruff]
+target-version = "py314"
+
+[tool.ruff.format]
+indent-style = "space"
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "F",    # pyflakes (unused imports, undefined names, etc.)
+    "I",    # isort (import ordering)
+    "B",    # flake8-bugbear (common bug patterns)
+    "C4",   # flake8-comprehensions (better comprehension style)
+    "UP",   # pyupgrade (modern Python syntax)
+    "RUF",  # ruff-specific rules
+]
+
+[tool.mypy]
+strict = true
+python_version = "3.14"
