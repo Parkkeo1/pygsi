@@ -5,7 +5,7 @@ build-backend = "uv_build"
 [project]
 name = "pygsi"
 version = "0.1.0"
-description = "A Python library for handling live Game State Integration data from CS2"
+description = "A Python library to interface with CS2's Game State Integration"
 requires-python = ">=3.14"
 dependencies = [
     "fastapi>=0.100.0",
