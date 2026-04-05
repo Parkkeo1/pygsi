@@ -213,9 +213,8 @@ async def handler(old: GameState | None, new: GameState) -> None: ...
 | `helmet` | `bool` | Has helmet |
 | `money` | `int` | Current money |
 | `round_kills` | `int` | Kills in current round |
-| `round_totaldmg` | `int` | Total damage dealt this round |
 | `flashed` | `int` | Flash intensity (0–255) |
-| `defusekit` | `bool \| None` | Has defuse kit (CT only) |
+| `equip_value` | `int` | Total value of equipped items |
 
 #### `PlayerMatchStats`
 
@@ -237,6 +236,7 @@ async def handler(old: GameState | None, new: GameState) -> None: ...
 | `round` | `int` | Current round number |
 | `team_ct_score` | `int` | CT rounds won |
 | `team_t_score` | `int` | T rounds won |
+| `round_wins` | `dict[str, str]` | Round-by-round win history (e.g. `{"1": "ct_win_elimination"}`) |
 
 
 ## Scope and Limitations

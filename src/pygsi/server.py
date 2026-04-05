@@ -156,10 +156,15 @@ class GSIServer:
         return app
 
     async def _handle_payload(self, payload: GSIPayload) -> None:
-        prev_state = self._state
         new_state = payload.to_game_state()
+        # Only process payloads during a live match (skip warmup, menu, etc.)
+        if new_state.map is None or new_state.map.phase != "live":
+            return
+        # After death, CS2 sends the spectated teammate's data — null it out
+        # so gsi.state.player is always the target player or None
         if new_state.player is not None and new_state.player.steamid != self.player_id:
             new_state = new_state.model_copy(update={"player": None})
+        prev_state = self._state
         self._state = new_state
         await self._fire_events(prev_state, self._state)
 

@@ -71,5 +71,5 @@ Only add events for data that is available to active players (see constraints ab
 ## Examples
 
 `example/` contains runnable examples and a GSI config file with a README for local setup:
-- `example.py` — registers all event handlers and logs every event to the console.
+- `simple.py` — registers all event handlers and logs every event to the console.
 - `capture.py` — records every payload as JSON to a local DuckDB database using `on_state_update`.

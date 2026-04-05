@@ -10,6 +10,7 @@ class MapState(BaseModel):
     round: int
     team_ct_score: int
     team_t_score: int
+    round_wins: dict[str, str] = {}
 
 
 class RoundState(BaseModel):
@@ -28,9 +29,7 @@ class PlayerState(BaseModel):
     money: int
     round_kills: int
     round_killhs: int
-    round_totaldmg: int
     equip_value: int
-    defusekit: bool | None = None
 
 
 class PlayerMatchStats(BaseModel):

@@ -30,6 +30,7 @@ class _MapPayload(BaseModel):
     round: int
     team_ct: dict[str, int]
     team_t: dict[str, int]
+    round_wins: dict[str, str] = {}
 
     def to_public(self) -> MapState:
         return MapState(
@@ -39,6 +40,7 @@ class _MapPayload(BaseModel):
             round=self.round,
             team_ct_score=self.team_ct["score"],
             team_t_score=self.team_t["score"],
+            round_wins=self.round_wins,
         )
 
 
@@ -70,9 +72,7 @@ class _PlayerStatePayload(BaseModel):
     money: int
     round_kills: int
     round_killhs: int
-    round_totaldmg: int
     equip_value: int
-    defusekit: bool | None = None
 
     def to_public(self) -> PlayerState:
         return PlayerState(**self.model_dump())
@@ -111,13 +111,16 @@ class _PlayerPayload(BaseModel):
 
     steamid: str
     name: str
-    team: Literal["T", "CT"]
+    team: Literal["T", "CT"] | None = None
     activity: str | None = None
-    state: _PlayerStatePayload
+    state: _PlayerStatePayload | None = None
     weapons: dict[str, _WeaponPayload] = {}
-    match_stats: _PlayerMatchStatsPayload
+    match_stats: _PlayerMatchStatsPayload | None = None
 
-    def to_public(self) -> Player:
+    def to_public(self) -> Player | None:
+        # Menu-state payloads lack team/state/match_stats — skip them
+        if self.team is None or self.state is None or self.match_stats is None:
+            return None
         return Player(
             steamid=self.steamid,
             name=self.name,

@@ -34,9 +34,9 @@ C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\ga
 
 The filename **must** start with `gamestate_integration_` and end with `.cfg` — CS2 scans for this prefix on launch.
 
-### 2. Edit `example.py`
+### 2. Edit `simple.py`
 
-Open `example.py` and replace the placeholder SteamID:
+Open `simple.py` and replace the placeholder SteamID:
 
 ```python
 STEAM_ID = "76561198XXXXXXXXX"  # ← your SteamID64 here
@@ -47,7 +47,7 @@ STEAM_ID = "76561198XXXXXXXXX"  # ← your SteamID64 here
 From the repo root:
 
 ```bash
-uv run python example/example.py
+uv run python example/simple.py
 ```
 
 You should see:
@@ -104,10 +104,10 @@ spectators/observers, not active players.
 **No output after joining a match?**
 - Make sure CS2 was (re)started *after* copying the cfg file.
 - Verify the cfg is in the `game/csgo/cfg/` directory (not the old `csgo/cfg/`).
-- Check that your SteamID in `example.py` matches `status` output in console.
+- Check that your SteamID in `simple.py` matches `status` output in console.
 
 **"Address already in use" error?**
-- Another process is using port 4213. Kill it or change `PORT` in `example.py`
+- Another process is using port 4213. Kill it or change `PORT` in `simple.py`
   (and update the `uri` in the cfg to match).
 
 **Events are delayed?**

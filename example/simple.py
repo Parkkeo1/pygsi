@@ -4,7 +4,7 @@ pygsi example — logs every GSI event to the console.
 Usage:
     1. Copy gamestate_integration_pygsi.cfg into your CS2 cfg directory.
     2. Replace STEAM_ID below with your SteamID64.
-    3. Run:  uv run python example/example.py
+    3. Run:  uv run python example/simple.py
     4. Launch CS2 and join a match.
 """
 
@@ -30,6 +30,13 @@ logging.basicConfig(
     datefmt="%H:%M:%S",
 )
 log = logging.getLogger("pygsi.example")
+
+# Send debug logs (raw payloads) to a separate file
+_debug_handler = logging.FileHandler("gsi_debug.log")
+_debug_handler.setLevel(logging.DEBUG)
+_debug_handler.setFormatter(logging.Formatter("%(asctime)s  %(message)s", datefmt="%H:%M:%S"))
+logging.getLogger("pygsi.server").addHandler(_debug_handler)
+logging.getLogger("pygsi.server").setLevel(logging.DEBUG)
 
 gsi = GSIServer(player_id=STEAM_ID, port=PORT)
 
