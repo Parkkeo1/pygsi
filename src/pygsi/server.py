@@ -33,7 +33,7 @@ class GSIServer:
         gsi.run()
     """
 
-    def __init__(self, player_id: str, port: int = 4000, host: str = "0.0.0.0") -> None:
+    def __init__(self, player_id: str, port: int = 4213, host: str = "0.0.0.0") -> None:
         self.player_id = player_id
         self.port = port
         self.host = host

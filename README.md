@@ -42,10 +42,10 @@ Paste the following contents:
 "pygsi"
 {
     // replace with your remote server URL if not running locally
-    "uri"           "http://127.0.0.1:4000"
+    "uri"           "http://127.0.0.1:4213"
     "timeout"       "5.0"
-    "buffer"        "0.1"
-    "throttle"      "0.1"
+    "buffer"        "1"
+    "throttle"      "1"
     "heartbeat"     "30.0"
     "data"
     {
@@ -67,7 +67,7 @@ Restart CS2 after adding the file.
 ```python
 from pygsi import GSIServer, RoundState, PlayerMatchStats, PlayerState
 
-gsi = GSIServer(player_id="YOUR_STEAM_ID_64", port=4000)
+gsi = GSIServer(player_id="YOUR_STEAM_ID_64", port=4213)
 
 
 @gsi.on_round_start
@@ -100,19 +100,21 @@ gsi.run()
 
 Run your script, then launch CS2 and join a match. Events will fire in real time as the game progresses.
 
+For a complete working example that logs all events, including the GSI config file and local setup instructions, see the [`example/`](example/) directory.
+
 
 ## API
 
 ### `GSIServer`
 
 ```python
-GSIServer(player_id: str, port: int = 4000, host: str = "0.0.0.0")
+GSIServer(player_id: str, port: int = 4213, host: str = "0.0.0.0")
 ```
 
 | Parameter | Description |
 |---|---|
 | `player_id` | Your Steam ID 64. Used to filter player-specific events to the local player only. |
-| `port` | Port to listen on. Must match the `uri` in your CS2 GSI config. Defaults to `4000`. |
+| `port` | Port to listen on. Must match the `uri` in your CS2 GSI config. Defaults to `4213`. |
 | `host` | Host to bind to. Defaults to `0.0.0.0` (all interfaces). |
 
 #### `gsi.state`
