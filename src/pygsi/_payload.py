@@ -6,18 +6,20 @@ winning_team). All models here use extra='ignore' so unknown or future fields
 don't break parsing.
 """
 
-from typing import Literal
-
 from pydantic import BaseModel, ConfigDict
 
 from .models import (
+    Activity,
+    BombStatus,
     GameState,
+    MapPhase,
     MapState,
     Player,
     PlayerMatchStats,
     PlayerState,
+    RoundPhase,
     RoundState,
-
+    Team,
 )
 
 
@@ -26,7 +28,7 @@ class _MapPayload(BaseModel):
 
     name: str
     mode: str
-    phase: Literal["warmup", "live", "intermission", "gameover"]
+    phase: MapPhase
     round: int
     team_ct: dict[str, int]
     team_t: dict[str, int]
@@ -47,10 +49,10 @@ class _MapPayload(BaseModel):
 class _RoundPayload(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
-    phase: Literal["freezetime", "live", "over"]
-    bomb: Literal["planted", "defused", "exploded"] | None = None
+    phase: RoundPhase
+    bomb: BombStatus | None = None
     # CS2 sends "win_team", not "winning_team"
-    win_team: Literal["CT", "T"] | None = None
+    win_team: Team | None = None
 
     def to_public(self) -> RoundState:
         return RoundState(
@@ -96,8 +98,8 @@ class _PlayerPayload(BaseModel):
 
     steamid: str
     name: str
-    team: Literal["T", "CT"] | None = None
-    activity: str | None = None
+    team: Team | None = None
+    activity: Activity | None = None
     state: _PlayerStatePayload | None = None
     match_stats: _PlayerMatchStatsPayload | None = None
 

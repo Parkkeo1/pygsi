@@ -1,12 +1,42 @@
-from typing import Literal
+from enum import StrEnum
 
 from pydantic import BaseModel
+
+
+class MapPhase(StrEnum):
+    WARMUP = "warmup"
+    LIVE = "live"
+    INTERMISSION = "intermission"
+    GAMEOVER = "gameover"
+
+
+class RoundPhase(StrEnum):
+    FREEZETIME = "freezetime"
+    LIVE = "live"
+    OVER = "over"
+
+
+class BombStatus(StrEnum):
+    PLANTED = "planted"
+    DEFUSED = "defused"
+    EXPLODED = "exploded"
+
+
+class Team(StrEnum):
+    T = "T"
+    CT = "CT"
+
+
+class Activity(StrEnum):
+    PLAYING = "playing"
+    MENU = "menu"
+    TEXT_INPUT = "textinput"
 
 
 class MapState(BaseModel):
     name: str
     mode: str
-    phase: Literal["warmup", "live", "intermission", "gameover"]
+    phase: MapPhase
     round: int
     team_ct_score: int
     team_t_score: int
@@ -14,9 +44,9 @@ class MapState(BaseModel):
 
 
 class RoundState(BaseModel):
-    phase: Literal["freezetime", "live", "over"]
-    bomb: Literal["planted", "defused", "exploded"] | None = None
-    winning_team: Literal["CT", "T"] | None = None
+    phase: RoundPhase
+    bomb: BombStatus | None = None
+    winning_team: Team | None = None
 
 
 class PlayerState(BaseModel):
@@ -43,8 +73,8 @@ class PlayerMatchStats(BaseModel):
 class Player(BaseModel):
     steamid: str
     name: str
-    team: Literal["T", "CT"]
-    activity: str | None = None
+    team: Team
+    activity: Activity | None = None
     state: PlayerState
     match_stats: PlayerMatchStats
 

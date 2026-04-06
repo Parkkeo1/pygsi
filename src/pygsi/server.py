@@ -11,7 +11,15 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 from ._payload import GSIPayload
-from .models import GameState, PlayerMatchStats, PlayerState, RoundState
+from .models import (
+    BombStatus,
+    GameState,
+    MapPhase,
+    PlayerMatchStats,
+    PlayerState,
+    RoundPhase,
+    RoundState,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -140,7 +148,9 @@ class GSIServer:
         app = FastAPI()
 
         @app.exception_handler(RequestValidationError)
-        async def handle_validation_error(request: Request, exc: RequestValidationError) -> JSONResponse:
+        async def handle_validation_error(
+            request: Request, exc: RequestValidationError
+        ) -> JSONResponse:
             logger.error("Request validation error: %s", exc)
             return JSONResponse(status_code=200, content={"status": "ok"})
 
@@ -149,10 +159,8 @@ class GSIServer:
             try:
                 body = await request.json()
                 if logger.isEnabledFor(logging.DEBUG):
-                    logger.debug(
-                        "Raw payload:\n%s", json.dumps(body, indent=2)
-                    )
-                    
+                    logger.debug("Raw payload:\n%s", json.dumps(body, indent=2))
+
                 payload = GSIPayload.model_validate(body)
                 await self._handle_payload(payload)
             except Exception as e:
@@ -166,9 +174,9 @@ class GSIServer:
         new_state = payload.to_game_state()
 
         # Only process payloads during a live match (skip warmup, menu, etc.)
-        if new_state.map is None or new_state.map.phase != "live":
+        if new_state.map is None or new_state.map.phase != MapPhase.LIVE:
             return
-        
+
         # After death, CS2 sends the spectated teammate's data — null it out
         # so gsi.state.player is always the target player or None
         if new_state.player is not None and new_state.player.steamid != self.player_id:
@@ -193,23 +201,25 @@ class GSIServer:
         prev_round = prev.round if prev else None
         prev_phase = prev_round.phase if prev_round else None
 
-        if prev_phase != "live" and curr.round.phase == "live":
+        if prev_phase != RoundPhase.LIVE and curr.round.phase == RoundPhase.LIVE:
             await self._dispatch(Event.ROUND_START, prev_round, curr.round)
-        elif prev_phase == "live" and curr.round.phase == "over":
+        elif prev_phase == RoundPhase.LIVE and curr.round.phase == RoundPhase.OVER:
             await self._dispatch(Event.ROUND_END, prev_round, curr.round)
 
-    async def _handle_bomb_events(self, prev: GameState | None, curr: GameState) -> None:
+    async def _handle_bomb_events(
+        self, prev: GameState | None, curr: GameState
+    ) -> None:
         if curr.round is None:
             return
         prev_round = prev.round if prev else None
         prev_bomb = prev_round.bomb if prev_round else None
         curr_bomb = curr.round.bomb
 
-        if prev_bomb != "planted" and curr_bomb == "planted":
+        if prev_bomb != BombStatus.PLANTED and curr_bomb == BombStatus.PLANTED:
             await self._dispatch(Event.BOMB_PLANTED, prev_round, curr.round)
-        elif prev_bomb == "planted" and curr_bomb == "defused":
+        elif prev_bomb == BombStatus.PLANTED and curr_bomb == BombStatus.DEFUSED:
             await self._dispatch(Event.BOMB_DEFUSED, prev_round, curr.round)
-        elif prev_bomb == "planted" and curr_bomb == "exploded":
+        elif prev_bomb == BombStatus.PLANTED and curr_bomb == BombStatus.EXPLODED:
             await self._dispatch(Event.BOMB_EXPLODED, prev_round, curr.round)
 
     async def _handle_player_events(
