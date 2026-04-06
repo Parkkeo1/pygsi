@@ -1,0 +1,856 @@
+{
+  "menu": {
+    "provider": {
+      "name": "Counter-Strike: Global Offensive",
+      "appid": 730,
+      "version": 14141,
+      "steamid": "76561198158189084",
+      "timestamp": 1775425088
+    },
+    "player": {
+      "steamid": "76561198158189084",
+      "name": "brain fog",
+      "activity": "menu"
+    }
+  },
+  "warmup": {
+    "provider": {
+      "name": "Counter-Strike: Global Offensive",
+      "appid": 730,
+      "version": 14141,
+      "steamid": "76561198158189084",
+      "timestamp": 1775425103
+    },
+    "map": {
+      "mode": "competitive",
+      "name": "de_dust2",
+      "phase": "warmup",
+      "round": 0,
+      "team_ct": {
+        "score": 0,
+        "consecutive_round_losses": 0,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "team_t": {
+        "score": 0,
+        "consecutive_round_losses": 0,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "num_matches_to_win_series": 0
+    }
+  },
+  "freezetime_before_round_start": {
+    "provider": {
+      "name": "Counter-Strike: Global Offensive",
+      "appid": 730,
+      "version": 14141,
+      "steamid": "76561198158189084",
+      "timestamp": 1775425125
+    },
+    "player": {
+      "steamid": "76561198158189084",
+      "name": "brain fog",
+      "observer_slot": 5,
+      "team": "T",
+      "activity": "playing",
+      "state": {
+        "health": 100,
+        "armor": 0,
+        "helmet": false,
+        "flashed": 0,
+        "smoked": 0,
+        "burning": 0,
+        "money": 0,
+        "round_kills": 0,
+        "round_killhs": 0,
+        "equip_value": 800
+      },
+      "match_stats": {
+        "kills": 0,
+        "assists": 0,
+        "deaths": 0,
+        "mvps": 0,
+        "score": 0
+      },
+      "weapons": {
+        "weapon_0": {
+          "name": "weapon_knife_t",
+          "paintkit": "default",
+          "type": "Knife",
+          "state": "holstered"
+        },
+        "weapon_1": {
+          "name": "weapon_c4",
+          "paintkit": "default",
+          "type": "C4",
+          "state": "holstered"
+        },
+        "weapon_2": {
+          "name": "weapon_tec9",
+          "paintkit": "cu_tec9_avalanche",
+          "type": "Pistol",
+          "ammo_clip": 18,
+          "ammo_clip_max": 18,
+          "ammo_reserve": 3,
+          "state": "holstered"
+        },
+        "weapon_3": {
+          "name": "weapon_smokegrenade",
+          "paintkit": "default",
+          "type": "Grenade",
+          "ammo_reserve": 1,
+          "state": "active"
+        }
+      }
+    },
+    "map": {
+      "mode": "competitive",
+      "name": "de_dust2",
+      "phase": "live",
+      "round": 0,
+      "team_ct": {
+        "score": 0,
+        "consecutive_round_losses": 1,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "team_t": {
+        "score": 0,
+        "consecutive_round_losses": 1,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "num_matches_to_win_series": 0
+    },
+    "round": {
+      "phase": "freezetime"
+    }
+  },
+  "round_start": {
+    "provider": {
+      "name": "Counter-Strike: Global Offensive",
+      "appid": 730,
+      "version": 14141,
+      "steamid": "76561198158189084",
+      "timestamp": 1775425128
+    },
+    "player": {
+      "steamid": "76561198158189084",
+      "name": "brain fog",
+      "observer_slot": 5,
+      "team": "T",
+      "activity": "playing",
+      "state": {
+        "health": 100,
+        "armor": 0,
+        "helmet": false,
+        "flashed": 0,
+        "smoked": 0,
+        "burning": 0,
+        "money": 0,
+        "round_kills": 0,
+        "round_killhs": 0,
+        "equip_value": 800
+      },
+      "match_stats": {
+        "kills": 0,
+        "assists": 0,
+        "deaths": 0,
+        "mvps": 0,
+        "score": 0
+      },
+      "weapons": {
+        "weapon_0": {
+          "name": "weapon_knife_t",
+          "paintkit": "default",
+          "type": "Knife",
+          "state": "holstered"
+        },
+        "weapon_1": {
+          "name": "weapon_c4",
+          "paintkit": "default",
+          "type": "C4",
+          "state": "holstered"
+        },
+        "weapon_2": {
+          "name": "weapon_tec9",
+          "paintkit": "cu_tec9_avalanche",
+          "type": "Pistol",
+          "ammo_clip": 18,
+          "ammo_clip_max": 18,
+          "ammo_reserve": 3,
+          "state": "holstered"
+        },
+        "weapon_3": {
+          "name": "weapon_smokegrenade",
+          "paintkit": "default",
+          "type": "Grenade",
+          "ammo_reserve": 1,
+          "state": "active"
+        }
+      }
+    },
+    "map": {
+      "mode": "competitive",
+      "name": "de_dust2",
+      "phase": "live",
+      "round": 0,
+      "team_ct": {
+        "score": 0,
+        "consecutive_round_losses": 1,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "team_t": {
+        "score": 0,
+        "consecutive_round_losses": 1,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "num_matches_to_win_series": 0
+    },
+    "round": {
+      "phase": "live"
+    }
+  },
+  "mid_round": {
+    "provider": {
+      "name": "Counter-Strike: Global Offensive",
+      "appid": 730,
+      "version": 14141,
+      "steamid": "76561198158189084",
+      "timestamp": 1775425084
+    },
+    "player": {
+      "steamid": "76561198158189084",
+      "name": "brain fog",
+      "observer_slot": 5,
+      "team": "T",
+      "activity": "playing",
+      "state": {
+        "health": 100,
+        "armor": 0,
+        "helmet": false,
+        "flashed": 0,
+        "smoked": 0,
+        "burning": 0,
+        "money": 5850,
+        "round_kills": 0,
+        "round_killhs": 0,
+        "equip_value": 2900
+      },
+      "match_stats": {
+        "kills": 10,
+        "assists": 1,
+        "deaths": 2,
+        "mvps": 2,
+        "score": 13
+      },
+      "weapons": {
+        "weapon_0": {
+          "name": "weapon_knife_t",
+          "paintkit": "default",
+          "type": "Knife",
+          "state": "holstered"
+        },
+        "weapon_1": {
+          "name": "weapon_glock",
+          "paintkit": "cu_glock-liquescent",
+          "type": "Pistol",
+          "ammo_clip": 20,
+          "ammo_clip_max": 20,
+          "ammo_reserve": 3,
+          "state": "holstered"
+        },
+        "weapon_2": {
+          "name": "weapon_ak47",
+          "paintkit": "sp_mesh_tan",
+          "type": "Rifle",
+          "ammo_clip": 26,
+          "ammo_clip_max": 30,
+          "ammo_reserve": 3,
+          "state": "active"
+        },
+        "weapon_3": {
+          "name": "weapon_c4",
+          "paintkit": "default",
+          "type": "C4",
+          "state": "holstered"
+        }
+      }
+    },
+    "map": {
+      "mode": "competitive",
+      "name": "de_dust2",
+      "phase": "live",
+      "round": 4,
+      "team_ct": {
+        "score": 2,
+        "consecutive_round_losses": 2,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "team_t": {
+        "score": 2,
+        "consecutive_round_losses": 0,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "num_matches_to_win_series": 0,
+      "round_wins": {
+        "1": "ct_win_elimination",
+        "2": "ct_win_elimination",
+        "3": "t_win_bomb",
+        "4": "t_win_elimination"
+      }
+    },
+    "round": {
+      "phase": "live"
+    }
+  },
+  "before_bomb_plant": {
+    "provider": {
+      "name": "Counter-Strike: Global Offensive",
+      "appid": 730,
+      "version": 14141,
+      "steamid": "76561198158189084",
+      "timestamp": 1775425150
+    },
+    "player": {
+      "steamid": "76561198158189084",
+      "name": "brain fog",
+      "observer_slot": 5,
+      "team": "T",
+      "activity": "playing",
+      "state": {
+        "health": 98,
+        "armor": 0,
+        "helmet": false,
+        "flashed": 0,
+        "smoked": 0,
+        "burning": 0,
+        "money": 300,
+        "round_kills": 0,
+        "round_killhs": 0,
+        "equip_value": 800
+      },
+      "match_stats": {
+        "kills": 0,
+        "assists": 0,
+        "deaths": 0,
+        "mvps": 0,
+        "score": 2
+      },
+      "weapons": {
+        "weapon_0": {
+          "name": "weapon_knife_t",
+          "paintkit": "default",
+          "type": "Knife",
+          "state": "active"
+        },
+        "weapon_1": {
+          "name": "weapon_tec9",
+          "paintkit": "cu_tec9_avalanche",
+          "type": "Pistol",
+          "ammo_clip": 18,
+          "ammo_clip_max": 18,
+          "ammo_reserve": 3,
+          "state": "holstered"
+        },
+        "weapon_2": {
+          "name": "weapon_smokegrenade",
+          "paintkit": "default",
+          "type": "Grenade",
+          "ammo_reserve": 1,
+          "state": "holstered"
+        }
+      }
+    },
+    "map": {
+      "mode": "competitive",
+      "name": "de_dust2",
+      "phase": "live",
+      "round": 0,
+      "team_ct": {
+        "score": 0,
+        "consecutive_round_losses": 1,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "team_t": {
+        "score": 0,
+        "consecutive_round_losses": 1,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "num_matches_to_win_series": 0
+    },
+    "round": {
+      "phase": "live"
+    }
+  },
+  "bomb_planted": {
+    "provider": {
+      "name": "Counter-Strike: Global Offensive",
+      "appid": 730,
+      "version": 14141,
+      "steamid": "76561198158189084",
+      "timestamp": 1775425152
+    },
+    "player": {
+      "steamid": "76561198158189084",
+      "name": "brain fog",
+      "observer_slot": 5,
+      "team": "T",
+      "activity": "playing",
+      "state": {
+        "health": 98,
+        "armor": 0,
+        "helmet": false,
+        "flashed": 0,
+        "smoked": 0,
+        "burning": 0,
+        "money": 300,
+        "round_kills": 0,
+        "round_killhs": 0,
+        "equip_value": 800
+      },
+      "match_stats": {
+        "kills": 0,
+        "assists": 0,
+        "deaths": 0,
+        "mvps": 0,
+        "score": 2
+      },
+      "weapons": {
+        "weapon_0": {
+          "name": "weapon_knife_t",
+          "paintkit": "default",
+          "type": "Knife",
+          "state": "holstered"
+        },
+        "weapon_1": {
+          "name": "weapon_tec9",
+          "paintkit": "cu_tec9_avalanche",
+          "type": "Pistol",
+          "ammo_clip": 18,
+          "ammo_clip_max": 18,
+          "ammo_reserve": 3,
+          "state": "holstered"
+        },
+        "weapon_2": {
+          "name": "weapon_smokegrenade",
+          "paintkit": "default",
+          "type": "Grenade",
+          "ammo_reserve": 1,
+          "state": "active"
+        }
+      }
+    },
+    "map": {
+      "mode": "competitive",
+      "name": "de_dust2",
+      "phase": "live",
+      "round": 0,
+      "team_ct": {
+        "score": 0,
+        "consecutive_round_losses": 1,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "team_t": {
+        "score": 0,
+        "consecutive_round_losses": 1,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "num_matches_to_win_series": 0
+    },
+    "round": {
+      "phase": "live",
+      "bomb": "planted"
+    }
+  },
+  "before_round_end": {
+    "provider": {
+      "name": "Counter-Strike: Global Offensive",
+      "appid": 730,
+      "version": 14141,
+      "steamid": "76561198158189084",
+      "timestamp": 1775425188
+    },
+    "player": {
+      "steamid": "76561198158189084",
+      "name": "brain fog",
+      "observer_slot": 5,
+      "team": "T",
+      "activity": "playing",
+      "state": {
+        "health": 98,
+        "armor": 0,
+        "helmet": false,
+        "flashed": 0,
+        "smoked": 0,
+        "burning": 0,
+        "money": 300,
+        "round_kills": 0,
+        "round_killhs": 0,
+        "equip_value": 800
+      },
+      "match_stats": {
+        "kills": 0,
+        "assists": 0,
+        "deaths": 0,
+        "mvps": 0,
+        "score": 2
+      },
+      "weapons": {
+        "weapon_0": {
+          "name": "weapon_knife_t",
+          "paintkit": "default",
+          "type": "Knife",
+          "state": "holstered"
+        },
+        "weapon_1": {
+          "name": "weapon_tec9",
+          "paintkit": "cu_tec9_avalanche",
+          "type": "Pistol",
+          "ammo_clip": 18,
+          "ammo_clip_max": 18,
+          "ammo_reserve": 1,
+          "state": "active"
+        },
+        "weapon_2": {
+          "name": "weapon_smokegrenade",
+          "paintkit": "default",
+          "type": "Grenade",
+          "ammo_reserve": 1,
+          "state": "holstered"
+        }
+      }
+    },
+    "map": {
+      "mode": "competitive",
+      "name": "de_dust2",
+      "phase": "live",
+      "round": 0,
+      "team_ct": {
+        "score": 0,
+        "consecutive_round_losses": 1,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "team_t": {
+        "score": 0,
+        "consecutive_round_losses": 1,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "num_matches_to_win_series": 0
+    },
+    "round": {
+      "phase": "live",
+      "bomb": "planted"
+    }
+  },
+  "round_end_bomb_explode_death": {
+    "provider": {
+      "name": "Counter-Strike: Global Offensive",
+      "appid": 730,
+      "version": 14141,
+      "steamid": "76561198158189084",
+      "timestamp": 1775425190
+    },
+    "player": {
+      "steamid": "76561198158189084",
+      "name": "brain fog",
+      "observer_slot": 5,
+      "team": "T",
+      "activity": "playing",
+      "state": {
+        "health": 0,
+        "armor": 0,
+        "helmet": false,
+        "flashed": 0,
+        "smoked": 0,
+        "burning": 0,
+        "money": 3800,
+        "round_kills": 0,
+        "round_killhs": 0,
+        "equip_value": 800
+      },
+      "match_stats": {
+        "kills": 0,
+        "assists": 0,
+        "deaths": 1,
+        "mvps": 1,
+        "score": 4
+      },
+      "weapons": {}
+    },
+    "map": {
+      "mode": "competitive",
+      "name": "de_dust2",
+      "phase": "live",
+      "round": 1,
+      "team_ct": {
+        "score": 0,
+        "consecutive_round_losses": 2,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "team_t": {
+        "score": 1,
+        "consecutive_round_losses": 0,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "num_matches_to_win_series": 0,
+      "round_wins": {
+        "1": "t_win_bomb"
+      }
+    },
+    "round": {
+      "phase": "over",
+      "win_team": "T",
+      "bomb": "exploded"
+    }
+  },
+  "before_kill": {
+    "provider": {
+      "name": "Counter-Strike: Global Offensive",
+      "appid": 730,
+      "version": 14141,
+      "steamid": "76561198158189084",
+      "timestamp": 1775425252
+    },
+    "player": {
+      "steamid": "76561198158189084",
+      "name": "brain fog",
+      "observer_slot": 5,
+      "team": "T",
+      "activity": "playing",
+      "state": {
+        "health": 100,
+        "armor": 0,
+        "helmet": false,
+        "flashed": 0,
+        "smoked": 0,
+        "burning": 0,
+        "money": 3400,
+        "round_kills": 0,
+        "round_killhs": 0,
+        "equip_value": 700
+      },
+      "match_stats": {
+        "kills": 0,
+        "assists": 0,
+        "deaths": 1,
+        "mvps": 1,
+        "score": 6
+      },
+      "weapons": {
+        "weapon_0": {
+          "name": "weapon_knife_t",
+          "paintkit": "default",
+          "type": "Knife",
+          "state": "holstered"
+        },
+        "weapon_1": {
+          "name": "weapon_deagle",
+          "paintkit": "cu_desert_eagle_corroden",
+          "type": "Pistol",
+          "ammo_clip": 7,
+          "ammo_clip_max": 7,
+          "ammo_reserve": 0,
+          "state": "reloading"
+        }
+      }
+    },
+    "map": {
+      "mode": "competitive",
+      "name": "de_dust2",
+      "phase": "live",
+      "round": 1,
+      "team_ct": {
+        "score": 0,
+        "consecutive_round_losses": 2,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "team_t": {
+        "score": 1,
+        "consecutive_round_losses": 0,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "num_matches_to_win_series": 0,
+      "round_wins": {
+        "1": "t_win_bomb"
+      }
+    },
+    "round": {
+      "phase": "live",
+      "bomb": "planted"
+    }
+  },
+  "after_kill": {
+    "provider": {
+      "name": "Counter-Strike: Global Offensive",
+      "appid": 730,
+      "version": 14141,
+      "steamid": "76561198158189084",
+      "timestamp": 1775425254
+    },
+    "player": {
+      "steamid": "76561198158189084",
+      "name": "brain fog",
+      "observer_slot": 5,
+      "team": "T",
+      "activity": "playing",
+      "state": {
+        "health": 100,
+        "armor": 0,
+        "helmet": false,
+        "flashed": 0,
+        "smoked": 0,
+        "burning": 0,
+        "money": 3700,
+        "round_kills": 1,
+        "round_killhs": 1,
+        "equip_value": 700
+      },
+      "match_stats": {
+        "kills": 1,
+        "assists": 0,
+        "deaths": 1,
+        "mvps": 1,
+        "score": 9
+      },
+      "weapons": {
+        "weapon_0": {
+          "name": "weapon_knife_t",
+          "paintkit": "default",
+          "type": "Knife",
+          "state": "holstered"
+        },
+        "weapon_1": {
+          "name": "weapon_deagle",
+          "paintkit": "cu_desert_eagle_corroden",
+          "type": "Pistol",
+          "ammo_clip": 6,
+          "ammo_clip_max": 7,
+          "ammo_reserve": 0,
+          "state": "active"
+        }
+      }
+    },
+    "map": {
+      "mode": "competitive",
+      "name": "de_dust2",
+      "phase": "live",
+      "round": 1,
+      "team_ct": {
+        "score": 0,
+        "consecutive_round_losses": 2,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "team_t": {
+        "score": 1,
+        "consecutive_round_losses": 0,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "num_matches_to_win_series": 0,
+      "round_wins": {
+        "1": "t_win_bomb"
+      }
+    },
+    "round": {
+      "phase": "live",
+      "bomb": "planted"
+    }
+  },
+  "spectating_teammate": {
+    "provider": {
+      "name": "Counter-Strike: Global Offensive",
+      "appid": 730,
+      "version": 14141,
+      "steamid": "76561198158189084",
+      "timestamp": 1775425194
+    },
+    "player": {
+      "steamid": "503",
+      "name": "Niles",
+      "observer_slot": 9,
+      "team": "T",
+      "activity": "playing",
+      "state": {
+        "health": 100,
+        "armor": 0,
+        "helmet": false,
+        "flashed": 0,
+        "smoked": 0,
+        "burning": 0,
+        "money": 4600,
+        "round_kills": 1,
+        "round_killhs": 0,
+        "equip_value": 200
+      },
+      "match_stats": {
+        "kills": 1,
+        "assists": 0,
+        "deaths": 0,
+        "mvps": 0,
+        "score": 3
+      },
+      "weapons": {
+        "weapon_0": {
+          "name": "weapon_knife_t",
+          "paintkit": "default",
+          "type": "Knife",
+          "state": "holstered"
+        },
+        "weapon_1": {
+          "name": "weapon_glock",
+          "paintkit": "default",
+          "type": "Pistol",
+          "ammo_clip": 20,
+          "ammo_clip_max": 20,
+          "ammo_reserve": 2,
+          "state": "active"
+        }
+      }
+    },
+    "map": {
+      "mode": "competitive",
+      "name": "de_dust2",
+      "phase": "live",
+      "round": 1,
+      "team_ct": {
+        "score": 0,
+        "consecutive_round_losses": 2,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "team_t": {
+        "score": 1,
+        "consecutive_round_losses": 0,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "num_matches_to_win_series": 0,
+      "round_wins": {
+        "1": "t_win_bomb"
+      }
+    },
+    "round": {
+      "phase": "over",
+      "win_team": "T",
+      "bomb": "exploded"
+    }
+  }
+}
