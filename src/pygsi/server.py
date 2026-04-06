@@ -1,7 +1,7 @@
 import asyncio
 import json
 import logging
-from collections.abc import Callable, Coroutine
+from collections.abc import Callable, Coroutine, Sequence
 from enum import StrEnum
 from typing import Any
 
@@ -45,36 +45,68 @@ class GSIServer:
     Receives live CS2 Game State Integration updates over HTTP and fires
     typed async event handlers when game state transitions occur.
 
+    Supports tracking one or more players. Each player's state is tracked
+    independently, and event handlers receive the player_id that triggered
+    the event as the first argument.
+
     Usage:
-        gsi = GSIServer(player_id="76561198XXXXXXX", port=4000)
+        gsi = GSIServer(player_ids="76561198XXXXXXX", port=4000)
 
         @gsi.on_round_start
-        async def handle(old: RoundState | None, new: RoundState):
-            print(f"Round started on {gsi.state.map.name}")
+        async def handle(player_id: str, old: RoundState | None, new: RoundState):
+            print(f"Round started for {player_id}")
 
         gsi.run()
     """
 
-    def __init__(self, player_id: str, port: int = 4213, host: str = "0.0.0.0") -> None:
-        self.player_id = player_id
+    def __init__(
+        self, player_ids: str | Sequence[str], port: int = 4213, host: str = "0.0.0.0"
+    ) -> None:
+        if isinstance(player_ids, str):
+            self._player_ids = frozenset({player_ids})
+        else:
+            self._player_ids = frozenset(player_ids)
+
         self.port = port
         self.host = host
 
-        self._state: GameState | None = None
+        self._states: dict[str, GameState | None] = dict.fromkeys(
+            self._player_ids
+        )
         self._handlers: dict[Event, list[Handler]] = {event: [] for event in Event}
         self._app = self._build_app()
 
     @property
+    def player_ids(self) -> frozenset[str]:
+        """The set of player steamids being tracked."""
+        return self._player_ids
+
+    @property
+    def states(self) -> dict[str, GameState | None]:
+        """Per-player game state. Keyed by steamid."""
+        return self._states
+
+    @property
     def state(self) -> GameState | None:
-        """The most recently received full game state. None before first update."""
-        return self._state
+        """Convenience accessor for single-player mode.
+
+        Returns the tracked player's state. Raises RuntimeError if multiple
+        players are configured — use ``states`` instead.
+        """
+        if len(self._player_ids) != 1:
+            raise RuntimeError(
+                "GSIServer.state is only available with a single player_id. "
+                "Use GSIServer.states for multi-player."
+            )
+        return next(iter(self._states.values()))
 
     # --- Event registration decorators ---
 
     def on_round_start(self, fn: Handler) -> Handler:
         """Fires when round phase transitions from freezetime to live.
 
-        Handler signature: async def handler(old: RoundState | None, new: RoundState)
+        Handler signature:
+            async def handler(player_id: str, old: RoundState | None, new: RoundState)
         """
         self._handlers[Event.ROUND_START].append(fn)
         return fn
@@ -82,7 +114,8 @@ class GSIServer:
     def on_round_end(self, fn: Handler) -> Handler:
         """Fires when round phase transitions from live to over.
 
-        Handler signature: async def handler(old: RoundState | None, new: RoundState)
+        Handler signature:
+            async def handler(player_id: str, old: RoundState | None, new: RoundState)
         """
         self._handlers[Event.ROUND_END].append(fn)
         return fn
@@ -90,7 +123,8 @@ class GSIServer:
     def on_bomb_planted(self, fn: Handler) -> Handler:
         """Fires when the bomb is planted.
 
-        Handler signature: async def handler(old: RoundState | None, new: RoundState)
+        Handler signature:
+            async def handler(player_id: str, old: RoundState | None, new: RoundState)
         """
         self._handlers[Event.BOMB_PLANTED].append(fn)
         return fn
@@ -98,7 +132,8 @@ class GSIServer:
     def on_bomb_defused(self, fn: Handler) -> Handler:
         """Fires when the bomb is defused.
 
-        Handler signature: async def handler(old: RoundState | None, new: RoundState)
+        Handler signature:
+            async def handler(player_id: str, old: RoundState | None, new: RoundState)
         """
         self._handlers[Event.BOMB_DEFUSED].append(fn)
         return fn
@@ -106,24 +141,30 @@ class GSIServer:
     def on_bomb_exploded(self, fn: Handler) -> Handler:
         """Fires when the bomb explodes.
 
-        Handler signature: async def handler(old: RoundState | None, new: RoundState)
+        Handler signature:
+            async def handler(player_id: str, old: RoundState | None, new: RoundState)
         """
         self._handlers[Event.BOMB_EXPLODED].append(fn)
         return fn
 
     def on_local_player_kill(self, fn: Handler) -> Handler:
-        """Fires when the local player registers a kill.
+        """Fires when the tracked player registers a kill.
 
         Handler signature:
-            async def handler(old: PlayerMatchStats | None, new: PlayerMatchStats)
+            async def handler(
+                player_id: str,
+                old: PlayerMatchStats | None,
+                new: PlayerMatchStats,
+            )
         """
         self._handlers[Event.LOCAL_PLAYER_KILL].append(fn)
         return fn
 
     def on_local_player_death(self, fn: Handler) -> Handler:
-        """Fires when the local player's health reaches 0.
+        """Fires when the tracked player's health reaches 0.
 
-        Handler signature: async def handler(old: PlayerState | None, new: PlayerState)
+        Handler signature:
+            async def handler(player_id: str, old: PlayerState | None, new: PlayerState)
         """
         self._handlers[Event.LOCAL_PLAYER_DEATH].append(fn)
         return fn
@@ -131,7 +172,8 @@ class GSIServer:
     def on_state_update(self, fn: Handler) -> Handler:
         """Fires on every valid payload after state is stored.
 
-        Handler signature: async def handler(old: GameState | None, new: GameState)
+        Handler signature:
+            async def handler(player_id: str, old: GameState | None, new: GameState)
         """
         self._handlers[Event.STATE_UPDATE].append(fn)
         return fn
@@ -177,24 +219,31 @@ class GSIServer:
         if new_state.map is None or new_state.map.phase != MapPhase.LIVE:
             return
 
+        # Identify which player sent this payload via the provider block
+        provider_id = payload.provider_steamid
+        if provider_id is None or provider_id not in self._player_ids:
+            return
+
         # After death, CS2 sends the spectated teammate's data — null it out
-        # so gsi.state.player is always the target player or None
-        if new_state.player is not None and new_state.player.steamid != self.player_id:
+        # so state.player is always the target player or None
+        if new_state.player is not None and new_state.player.steamid != provider_id:
             new_state = new_state.model_copy(update={"player": None})
 
-        prev_state = self._state
-        self._state = new_state
+        prev_state = self._states[provider_id]
+        self._states[provider_id] = new_state
 
-        await self._fire_events(prev_state, self._state)
+        await self._fire_events(provider_id, prev_state, new_state)
 
-    async def _fire_events(self, prev: GameState | None, curr: GameState) -> None:
-        await self._dispatch(Event.STATE_UPDATE, prev, curr)
-        await self._handle_round_events(prev, curr)
-        await self._handle_bomb_events(prev, curr)
-        await self._handle_player_events(prev, curr)
+    async def _fire_events(
+        self, player_id: str, prev: GameState | None, curr: GameState
+    ) -> None:
+        await self._dispatch(Event.STATE_UPDATE, player_id, prev, curr)
+        await self._handle_round_events(player_id, prev, curr)
+        await self._handle_bomb_events(player_id, prev, curr)
+        await self._handle_player_events(player_id, prev, curr)
 
     async def _handle_round_events(
-        self, prev: GameState | None, curr: GameState
+        self, player_id: str, prev: GameState | None, curr: GameState
     ) -> None:
         if curr.round is None:
             return
@@ -202,12 +251,12 @@ class GSIServer:
         prev_phase = prev_round.phase if prev_round else None
 
         if prev_phase != RoundPhase.LIVE and curr.round.phase == RoundPhase.LIVE:
-            await self._dispatch(Event.ROUND_START, prev_round, curr.round)
+            await self._dispatch(Event.ROUND_START, player_id, prev_round, curr.round)
         elif prev_phase == RoundPhase.LIVE and curr.round.phase == RoundPhase.OVER:
-            await self._dispatch(Event.ROUND_END, prev_round, curr.round)
+            await self._dispatch(Event.ROUND_END, player_id, prev_round, curr.round)
 
     async def _handle_bomb_events(
-        self, prev: GameState | None, curr: GameState
+        self, player_id: str, prev: GameState | None, curr: GameState
     ) -> None:
         if curr.round is None:
             return
@@ -216,14 +265,14 @@ class GSIServer:
         curr_bomb = curr.round.bomb
 
         if prev_bomb != BombStatus.PLANTED and curr_bomb == BombStatus.PLANTED:
-            await self._dispatch(Event.BOMB_PLANTED, prev_round, curr.round)
+            await self._dispatch(Event.BOMB_PLANTED, player_id, prev_round, curr.round)
         elif prev_bomb == BombStatus.PLANTED and curr_bomb == BombStatus.DEFUSED:
-            await self._dispatch(Event.BOMB_DEFUSED, prev_round, curr.round)
+            await self._dispatch(Event.BOMB_DEFUSED, player_id, prev_round, curr.round)
         elif prev_bomb == BombStatus.PLANTED and curr_bomb == BombStatus.EXPLODED:
-            await self._dispatch(Event.BOMB_EXPLODED, prev_round, curr.round)
+            await self._dispatch(Event.BOMB_EXPLODED, player_id, prev_round, curr.round)
 
     async def _handle_player_events(
-        self, prev: GameState | None, curr: GameState
+        self, player_id: str, prev: GameState | None, curr: GameState
     ) -> None:
         if curr.player is None:
             return
@@ -235,6 +284,7 @@ class GSIServer:
         if prev_kills is not None and curr_kills > prev_kills:
             await self._dispatch(
                 Event.LOCAL_PLAYER_KILL,
+                player_id,
                 prev_player.match_stats if prev_player else None,
                 curr.player.match_stats,
             )
@@ -244,14 +294,17 @@ class GSIServer:
         if prev_health is not None and prev_health > 0 and curr_health == 0:
             await self._dispatch(
                 Event.LOCAL_PLAYER_DEATH,
+                player_id,
                 prev_player.state if prev_player else None,
                 curr.player.state,
             )
 
-    async def _dispatch(self, event: Event, old: _Slice | None, new: _Slice) -> None:
+    async def _dispatch(
+        self, event: Event, player_id: str, old: _Slice | None, new: _Slice
+    ) -> None:
         async def _run(handler: Handler) -> None:
             try:
-                await handler(old, new)
+                await handler(player_id, old, new)
             except Exception as e:
                 logger.exception(
                     "Error in %s handler '%s': %s", event, handler.__name__, e

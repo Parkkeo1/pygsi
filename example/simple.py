@@ -18,9 +18,9 @@ from pygsi import (
 )
 
 # ── Config ────────────────────────────────────────────────────────────────────
-# Replace with your SteamID64.
+# Replace with your SteamID64(s).
 # Find yours at https://steamid.io or by typing `status` in the CS2 console.
-STEAM_ID = "76561198XXXXXXXXX"
+STEAM_IDS = ["76561198XXXXXXXXX"]
 PORT = 4213
 # ──────────────────────────────────────────────────────────────────────────────
 
@@ -34,54 +34,62 @@ log = logging.getLogger(__name__)
 # Send debug logs (raw payloads) to a separate file
 _debug_handler = logging.FileHandler("gsi_debug.log")
 _debug_handler.setLevel(logging.DEBUG)
-_debug_handler.setFormatter(logging.Formatter("%(asctime)s  %(message)s", datefmt="%H:%M:%S"))
+_debug_handler.setFormatter(
+    logging.Formatter("%(asctime)s  %(message)s", datefmt="%H:%M:%S")
+)
 logging.getLogger("pygsi.server").addHandler(_debug_handler)
 logging.getLogger("pygsi.server").setLevel(logging.DEBUG)
 
-gsi = GSIServer(player_id=STEAM_ID, port=PORT)
+gsi = GSIServer(player_ids=STEAM_IDS, port=PORT)
 
 
 # ── Round events ──────────────────────────────────────────────────────────────
 
 
 @gsi.on_round_start
-async def round_start(old: RoundState | None, new: RoundState) -> None:
-    map_name = gsi.state.map.name if gsi.state and gsi.state.map else "unknown"
-    round_num = gsi.state.map.round if gsi.state and gsi.state.map else "?"
-    log.info(">>> ROUND %s START on %s", round_num, map_name)
+async def round_start(player_id: str, old: RoundState | None, new: RoundState) -> None:
+    state = gsi.states[player_id]
+    map_name = state.map.name if state and state.map else "unknown"
+    round_num = state.map.round if state and state.map else "?"
+    log.info("[%s] >>> ROUND %s START on %s", player_id, round_num, map_name)
 
 
 @gsi.on_round_end
-async def round_end(old: RoundState | None, new: RoundState) -> None:
+async def round_end(player_id: str, old: RoundState | None, new: RoundState) -> None:
     winner = new.winning_team or "unknown"
-    log.info("<<< ROUND END — winner: %s", winner)
+    log.info("[%s] <<< ROUND END — winner: %s", player_id, winner)
 
 
 # ── Bomb events ───────────────────────────────────────────────────────────────
 
 
 @gsi.on_bomb_planted
-async def bomb_planted(old: RoundState | None, new: RoundState) -> None:
-    log.info("*** BOMB PLANTED")
+async def bomb_planted(player_id: str, old: RoundState | None, new: RoundState) -> None:
+    log.info("[%s] *** BOMB PLANTED", player_id)
 
 
 @gsi.on_bomb_defused
-async def bomb_defused(old: RoundState | None, new: RoundState) -> None:
-    log.info("*** BOMB DEFUSED")
+async def bomb_defused(player_id: str, old: RoundState | None, new: RoundState) -> None:
+    log.info("[%s] *** BOMB DEFUSED", player_id)
 
 
 @gsi.on_bomb_exploded
-async def bomb_exploded(old: RoundState | None, new: RoundState) -> None:
-    log.info("*** BOMB EXPLODED")
+async def bomb_exploded(
+    player_id: str, old: RoundState | None, new: RoundState
+) -> None:
+    log.info("[%s] *** BOMB EXPLODED", player_id)
 
 
 # ── Player events ─────────────────────────────────────────────────────────────
 
 
 @gsi.on_local_player_kill
-async def player_kill(old: PlayerMatchStats | None, new: PlayerMatchStats) -> None:
+async def player_kill(
+    player_id: str, old: PlayerMatchStats | None, new: PlayerMatchStats
+) -> None:
     log.info(
-        "+++ KILL  (total K/D/A: %d/%d/%d)",
+        "[%s] +++ KILL  (total K/D/A: %d/%d/%d)",
+        player_id,
         new.kills,
         new.deaths,
         new.assists,
@@ -89,14 +97,16 @@ async def player_kill(old: PlayerMatchStats | None, new: PlayerMatchStats) -> No
 
 
 @gsi.on_local_player_death
-async def player_death(old: PlayerState | None, new: PlayerState) -> None:
-    log.info("--- DEATH")
+async def player_death(
+    player_id: str, old: PlayerState | None, new: PlayerState
+) -> None:
+    log.info("[%s] --- DEATH", player_id)
 
 
 # ── Run ───────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
     log.info("Listening for CS2 GSI on http://127.0.0.1:%d", PORT)
-    log.info("Player filter: %s", STEAM_ID)
+    log.info("Tracking players: %s", STEAM_IDS)
     log.info("Waiting for CS2 payloads...")
     gsi.run()

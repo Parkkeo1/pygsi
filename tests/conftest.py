@@ -21,7 +21,7 @@ def fixtures() -> dict[str, Any]:
 
 @pytest.fixture
 def gsi() -> GSIServer:
-    return GSIServer(player_id=PLAYER_ID, port=0)
+    return GSIServer(player_ids=PLAYER_ID, port=0)
 
 
 @pytest.fixture

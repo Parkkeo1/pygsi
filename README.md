@@ -2,7 +2,7 @@
 
 A Python library to interface with CS2's [Game State Integration](https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Game_State_Integration) (GSI). 
 
-Provides a strongly-typed, event-driven API for consuming live GSI data for a specific target/active player during matches. Not designed for spectators or observers.
+Provides a strongly-typed, event-driven API for consuming live GSI data for one or more active players during matches. Not designed for spectators or observers.
 
 ## Requirements
 
@@ -66,32 +66,37 @@ Restart CS2 after adding the file.
 ```python
 from pygsi import GSIServer, RoundState, PlayerMatchStats, PlayerState
 
-gsi = GSIServer(player_id="YOUR_STEAM_ID_64", port=4213)
+# Track a single player
+gsi = GSIServer(player_ids="YOUR_STEAM_ID_64", port=4213)
+
+# Or track multiple players publishing to the same server
+# gsi = GSIServer(player_ids=["STEAM_ID_1", "STEAM_ID_2"], port=4213)
 
 
 @gsi.on_round_start
-async def handle_round_start(old: RoundState | None, new: RoundState) -> None:
-    print(f"Round started on {gsi.state.map.name}")
+async def handle_round_start(player_id: str, old: RoundState | None, new: RoundState) -> None:
+    state = gsi.states[player_id]
+    print(f"[{player_id}] Round started on {state.map.name}")
 
 
 @gsi.on_round_end
-async def handle_round_end(old: RoundState | None, new: RoundState) -> None:
-    print(f"Round over — winner: {new.winning_team}")
+async def handle_round_end(player_id: str, old: RoundState | None, new: RoundState) -> None:
+    print(f"[{player_id}] Round over — winner: {new.winning_team}")
 
 
 @gsi.on_bomb_planted
-async def handle_bomb_planted(old: RoundState | None, new: RoundState) -> None:
-    print("Bomb planted!")
+async def handle_bomb_planted(player_id: str, old: RoundState | None, new: RoundState) -> None:
+    print(f"[{player_id}] Bomb planted!")
 
 
 @gsi.on_local_player_kill
-async def handle_kill(old: PlayerMatchStats | None, new: PlayerMatchStats) -> None:
-    print(f"Kill! Total this match: {new.kills}")
+async def handle_kill(player_id: str, old: PlayerMatchStats | None, new: PlayerMatchStats) -> None:
+    print(f"[{player_id}] Kill! Total this match: {new.kills}")
 
 
 @gsi.on_local_player_death
-async def handle_death(old: PlayerState | None, new: PlayerState) -> None:
-    print("You died.")
+async def handle_death(player_id: str, old: PlayerState | None, new: PlayerState) -> None:
+    print(f"[{player_id}] You died.")
 
 
 gsi.run()
@@ -107,27 +112,38 @@ For a complete working example that logs all events, including the GSI config fi
 ### `GSIServer`
 
 ```python
-GSIServer(player_id: str, port: int = 4213, host: str = "0.0.0.0")
+GSIServer(player_ids: str | Sequence[str], port: int = 4213, host: str = "0.0.0.0")
 ```
 
 | Parameter | Description |
 |---|---|
-| `player_id` | Your Steam ID 64. Used to filter player-specific events to the local player only. |
+| `player_ids` | One or more Steam ID 64s to track. Accepts a single string or a list. Payloads from other players are ignored. |
 | `port` | Port to listen on. Must match the `uri` in your CS2 GSI config. Defaults to `4213`. |
 | `host` | Host to bind to. Defaults to `0.0.0.0` (all interfaces). |
 
+#### `gsi.states`
+
+Per-player game state, keyed by steamid. Accessible at any time, not just inside event handlers.
+
+```python
+gsi.states["76561198XXXXXXX"].map.name        # e.g. "de_dust2"
+gsi.states["76561198XXXXXXX"].player.name     # player name
+```
+
+Each value is `None` before the first update is received for that player.
+
 #### `gsi.state`
 
-The most recently received full game state. Accessible at any time, not just inside event handlers.
+Convenience accessor for single-player mode. Returns the tracked player's state. Raises `RuntimeError` if multiple players are configured — use `gsi.states` instead.
 
 ```python
 gsi.state.map.name        # e.g. "de_dust2"
-gsi.state.map.round       # current round number
-gsi.state.player.name     # local player name
 gsi.state.round.phase     # "freezetime" | "live" | "over"
 ```
 
-Returns `None` before the first update is received.
+#### `gsi.player_ids`
+
+The `frozenset[str]` of player steamids being tracked.
 
 #### `gsi.run()`
 
@@ -138,41 +154,41 @@ Starts the HTTP server. Blocks until interrupted.
 
 Register handlers using decorators. All handlers must be `async` functions. Multiple handlers can be registered for the same event.
 
-Each handler receives the previous state (`old`) and the new state (`new`) for the relevant slice of game state. `old` is `None` if no prior state exists for that field.
+Each handler receives `player_id` (the steamid of the player whose payload triggered the event), the previous state (`old`), and the new state (`new`) for the relevant slice of game state. `old` is `None` if no prior state exists for that field.
 
 #### Round events
 
 ```python
 @gsi.on_round_start
-async def handler(old: RoundState | None, new: RoundState) -> None: ...
+async def handler(player_id: str, old: RoundState | None, new: RoundState) -> None: ...
 
 @gsi.on_round_end
-async def handler(old: RoundState | None, new: RoundState) -> None: ...
+async def handler(player_id: str, old: RoundState | None, new: RoundState) -> None: ...
 ```
 
 #### Bomb events
 
 ```python
 @gsi.on_bomb_planted
-async def handler(old: RoundState | None, new: RoundState) -> None: ...
+async def handler(player_id: str, old: RoundState | None, new: RoundState) -> None: ...
 
 @gsi.on_bomb_defused
-async def handler(old: RoundState | None, new: RoundState) -> None: ...
+async def handler(player_id: str, old: RoundState | None, new: RoundState) -> None: ...
 
 @gsi.on_bomb_exploded
-async def handler(old: RoundState | None, new: RoundState) -> None: ...
+async def handler(player_id: str, old: RoundState | None, new: RoundState) -> None: ...
 ```
 
 #### Local player events
 
-These events are scoped to the `player_id` passed at initialization.
+These events are scoped to the tracked players passed at initialization.
 
 ```python
 @gsi.on_local_player_kill
-async def handler(old: PlayerMatchStats | None, new: PlayerMatchStats) -> None: ...
+async def handler(player_id: str, old: PlayerMatchStats | None, new: PlayerMatchStats) -> None: ...
 
 @gsi.on_local_player_death
-async def handler(old: PlayerState | None, new: PlayerState) -> None: ...
+async def handler(player_id: str, old: PlayerState | None, new: PlayerState) -> None: ...
 ```
 
 #### Full state updates
@@ -181,7 +197,7 @@ Fires on every valid payload with the complete `GameState`.
 
 ```python
 @gsi.on_state_update
-async def handler(old: GameState | None, new: GameState) -> None: ...
+async def handler(player_id: str, old: GameState | None, new: GameState) -> None: ...
 ```
 
 
@@ -248,7 +264,7 @@ pygsi is designed for **active players** (not spectators or observers). The foll
 - `phase_countdowns` — phase countdown timers
 - `player_position` — local player position
 
-As a result, player-specific events (`on_local_player_kill`, `on_local_player_death`) are scoped to the **local player only**. Kill victim information is not available.
+As a result, player-specific events (`on_local_player_kill`, `on_local_player_death`) are scoped to the **tracked players only**. Kill victim information is not available.
 
 
 ## License

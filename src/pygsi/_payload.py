@@ -117,6 +117,12 @@ class _PlayerPayload(BaseModel):
         )
 
 
+class _ProviderPayload(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+
+    steamid: str
+
+
 class GSIPayload(BaseModel):
     """Top-level CS2 GSI payload.
 
@@ -125,9 +131,15 @@ class GSIPayload(BaseModel):
 
     model_config = ConfigDict(extra="ignore")
 
+    provider: _ProviderPayload | None = None
     map: _MapPayload | None = None
     round: _RoundPayload | None = None
     player: _PlayerPayload | None = None
+
+    @property
+    def provider_steamid(self) -> str | None:
+        """The steamid of the CS2 client that sent this payload."""
+        return self.provider.steamid if self.provider else None
 
     def to_game_state(self) -> GameState:
         return GameState(
