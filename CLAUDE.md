@@ -58,6 +58,29 @@ uv run mypy src/           # type check
 
 mypy is configured with `strict = true`. All functions must have type annotations and return types.
 
+## Testing
+
+```bash
+uv sync --group test           # install test dependencies
+uv run pytest tests/ -v        # run tests
+```
+
+Integration tests live in `tests/` and use real CS2 GSI payloads captured from a practice match (`tests/fixtures.json`). Tests exercise the full stack via FastAPI's in-process ASGI transport (`httpx.AsyncClient` + `ASGITransport`) — no real server or port needed.
+
+**Stack:** pytest, pytest-asyncio (auto mode), httpx.
+
+**What's tested:**
+- **State parsing** — all model fields correctly parsed from raw JSON (map, round, player state, match stats, enums)
+- **Payload filtering** — warmup/menu payloads ignored, spectating teammate nulls player, filtered payloads don't wipe existing state
+- **State transitions** — state updates correctly across sequential payloads
+- **Event handlers** — all 8 event types fire on correct transitions with correct `(old, new)` arguments
+- **Edge cases** — events not fired without required prior state, death not re-fired when already dead, bomb exploded requires prior planted
+- **Multiple events** — single payload can trigger multiple events simultaneously, multiple handlers per event
+- **Error isolation** — failing handler doesn't block others, server always returns 200
+- **HTTP behavior** — always returns 200 even on invalid/empty payloads
+
+**Adding tests for new events:** add fixture payloads to `tests/fixtures.json` (strip `previously`/`added` keys from raw CS2 JSON), then add test cases following the existing pattern in `tests/test_integration.py`.
+
 ## Adding new events
 
 1. Add the handler registration method to `GSIServer` in `server.py` following the existing pattern.

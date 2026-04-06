@@ -10,7 +10,7 @@ from httpx import ASGITransport, AsyncClient
 from pygsi import GSIServer
 
 FIXTURES_PATH = Path(__file__).parent / "fixtures.json"
-PLAYER_ID = "76561198158189084"
+PLAYER_ID = "76561198000000000"
 
 
 @pytest.fixture

@@ -72,8 +72,8 @@ class TestStateParsing:
 
         # Player
         assert state.player is not None
-        assert state.player.steamid == "76561198158189084"
-        assert state.player.name == "brain fog"
+        assert state.player.steamid == "76561198000000000"
+        assert state.player.name == "TestPlayer"
         assert state.player.team == Team.T
         assert state.player.activity == Activity.PLAYING
 

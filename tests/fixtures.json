@@ -4,12 +4,12 @@
       "name": "Counter-Strike: Global Offensive",
       "appid": 730,
       "version": 14141,
-      "steamid": "76561198158189084",
+      "steamid": "76561198000000000",
       "timestamp": 1775425088
     },
     "player": {
-      "steamid": "76561198158189084",
-      "name": "brain fog",
+      "steamid": "76561198000000000",
+      "name": "TestPlayer",
       "activity": "menu"
     }
   },
@@ -18,7 +18,7 @@
       "name": "Counter-Strike: Global Offensive",
       "appid": 730,
       "version": 14141,
-      "steamid": "76561198158189084",
+      "steamid": "76561198000000000",
       "timestamp": 1775425103
     },
     "map": {
@@ -46,12 +46,12 @@
       "name": "Counter-Strike: Global Offensive",
       "appid": 730,
       "version": 14141,
-      "steamid": "76561198158189084",
+      "steamid": "76561198000000000",
       "timestamp": 1775425125
     },
     "player": {
-      "steamid": "76561198158189084",
-      "name": "brain fog",
+      "steamid": "76561198000000000",
+      "name": "TestPlayer",
       "observer_slot": 5,
       "team": "T",
       "activity": "playing",
@@ -133,12 +133,12 @@
       "name": "Counter-Strike: Global Offensive",
       "appid": 730,
       "version": 14141,
-      "steamid": "76561198158189084",
+      "steamid": "76561198000000000",
       "timestamp": 1775425128
     },
     "player": {
-      "steamid": "76561198158189084",
-      "name": "brain fog",
+      "steamid": "76561198000000000",
+      "name": "TestPlayer",
       "observer_slot": 5,
       "team": "T",
       "activity": "playing",
@@ -220,12 +220,12 @@
       "name": "Counter-Strike: Global Offensive",
       "appid": 730,
       "version": 14141,
-      "steamid": "76561198158189084",
+      "steamid": "76561198000000000",
       "timestamp": 1775425084
     },
     "player": {
-      "steamid": "76561198158189084",
-      "name": "brain fog",
+      "steamid": "76561198000000000",
+      "name": "TestPlayer",
       "observer_slot": 5,
       "team": "T",
       "activity": "playing",
@@ -315,12 +315,12 @@
       "name": "Counter-Strike: Global Offensive",
       "appid": 730,
       "version": 14141,
-      "steamid": "76561198158189084",
+      "steamid": "76561198000000000",
       "timestamp": 1775425150
     },
     "player": {
-      "steamid": "76561198158189084",
-      "name": "brain fog",
+      "steamid": "76561198000000000",
+      "name": "TestPlayer",
       "observer_slot": 5,
       "team": "T",
       "activity": "playing",
@@ -396,12 +396,12 @@
       "name": "Counter-Strike: Global Offensive",
       "appid": 730,
       "version": 14141,
-      "steamid": "76561198158189084",
+      "steamid": "76561198000000000",
       "timestamp": 1775425152
     },
     "player": {
-      "steamid": "76561198158189084",
-      "name": "brain fog",
+      "steamid": "76561198000000000",
+      "name": "TestPlayer",
       "observer_slot": 5,
       "team": "T",
       "activity": "playing",
@@ -478,12 +478,12 @@
       "name": "Counter-Strike: Global Offensive",
       "appid": 730,
       "version": 14141,
-      "steamid": "76561198158189084",
+      "steamid": "76561198000000000",
       "timestamp": 1775425188
     },
     "player": {
-      "steamid": "76561198158189084",
-      "name": "brain fog",
+      "steamid": "76561198000000000",
+      "name": "TestPlayer",
       "observer_slot": 5,
       "team": "T",
       "activity": "playing",
@@ -560,12 +560,12 @@
       "name": "Counter-Strike: Global Offensive",
       "appid": 730,
       "version": 14141,
-      "steamid": "76561198158189084",
+      "steamid": "76561198000000000",
       "timestamp": 1775425190
     },
     "player": {
-      "steamid": "76561198158189084",
-      "name": "brain fog",
+      "steamid": "76561198000000000",
+      "name": "TestPlayer",
       "observer_slot": 5,
       "team": "T",
       "activity": "playing",
@@ -623,12 +623,12 @@
       "name": "Counter-Strike: Global Offensive",
       "appid": 730,
       "version": 14141,
-      "steamid": "76561198158189084",
+      "steamid": "76561198000000000",
       "timestamp": 1775425252
     },
     "player": {
-      "steamid": "76561198158189084",
-      "name": "brain fog",
+      "steamid": "76561198000000000",
+      "name": "TestPlayer",
       "observer_slot": 5,
       "team": "T",
       "activity": "playing",
@@ -701,12 +701,12 @@
       "name": "Counter-Strike: Global Offensive",
       "appid": 730,
       "version": 14141,
-      "steamid": "76561198158189084",
+      "steamid": "76561198000000000",
       "timestamp": 1775425254
     },
     "player": {
-      "steamid": "76561198158189084",
-      "name": "brain fog",
+      "steamid": "76561198000000000",
+      "name": "TestPlayer",
       "observer_slot": 5,
       "team": "T",
       "activity": "playing",
@@ -779,12 +779,12 @@
       "name": "Counter-Strike: Global Offensive",
       "appid": 730,
       "version": 14141,
-      "steamid": "76561198158189084",
+      "steamid": "76561198000000000",
       "timestamp": 1775425194
     },
     "player": {
       "steamid": "503",
-      "name": "Niles",
+      "name": "Bot_TestAlly",
       "observer_slot": 9,
       "team": "T",
       "activity": "playing",
