@@ -37,10 +37,12 @@ class Event(StrEnum):
     BOMB_DEFUSED = "on_bomb_defused"
     BOMB_EXPLODED = "on_bomb_exploded"
     LOCAL_PLAYER_KILL = "on_local_player_kill"
+    LOCAL_PLAYER_ASSIST = "on_local_player_assist"
+    LOCAL_PLAYER_MVP = "on_local_player_mvp"
     LOCAL_PLAYER_DEATH = "on_local_player_death"
     STATE_UPDATE = "on_state_update"
-    MATCH_END = "on_match_end"
     MAP_START = "on_map_start"
+    MAP_END = "on_map_end"
 
 
 class GSIServer:
@@ -163,6 +165,32 @@ class GSIServer:
         self._handlers[Event.LOCAL_PLAYER_KILL].append(fn)
         return fn
 
+    def on_local_player_assist(self, fn: Handler) -> Handler:
+        """Fires when the tracked player registers an assist.
+
+        Handler signature:
+            async def handler(
+                player_id: str,
+                old: PlayerMatchStats | None,
+                new: PlayerMatchStats,
+            )
+        """
+        self._handlers[Event.LOCAL_PLAYER_ASSIST].append(fn)
+        return fn
+
+    def on_local_player_mvp(self, fn: Handler) -> Handler:
+        """Fires when the tracked player is awarded MVP.
+
+        Handler signature:
+            async def handler(
+                player_id: str,
+                old: PlayerMatchStats | None,
+                new: PlayerMatchStats,
+            )
+        """
+        self._handlers[Event.LOCAL_PLAYER_MVP].append(fn)
+        return fn
+
     def on_local_player_death(self, fn: Handler) -> Handler:
         """Fires when the tracked player's health reaches 0.
 
@@ -182,7 +210,7 @@ class GSIServer:
         return fn
 
     def on_map_start(self, fn: Handler) -> Handler:
-        """Fires when a new map begins (first live payload after warmup or prior match).
+        """Fires when a new map begins (first live payload after warmup or prior map).
 
         Handler signature:
             async def handler(player_id: str, old: MapState | None, new: MapState)
@@ -190,13 +218,13 @@ class GSIServer:
         self._handlers[Event.MAP_START].append(fn)
         return fn
 
-    def on_match_end(self, fn: Handler) -> Handler:
-        """Fires when map phase transitions to gameover (match is over).
+    def on_map_end(self, fn: Handler) -> Handler:
+        """Fires when map phase transitions to gameover (map is over).
 
         Handler signature:
             async def handler(player_id: str, old: MapState | None, new: MapState)
         """
-        self._handlers[Event.MATCH_END].append(fn)
+        self._handlers[Event.MAP_END].append(fn)
         return fn
 
     # --- Server ---
@@ -244,19 +272,19 @@ class GSIServer:
         if provider_id is None or provider_id not in self._player_ids:
             return
 
-        # Match end: fire event and stop — don't fire other events
+        # map end: fire event and stop — don't fire other events
         if new_state.map.phase == MapPhase.GAMEOVER:
             prev_state = self._states[provider_id]
             prev_map = prev_state.map if prev_state else None
             if prev_map is not None and prev_map.phase == MapPhase.LIVE:
                 await self._dispatch(
-                    Event.MATCH_END, provider_id, prev_map, new_state.map
+                    Event.MAP_END, provider_id, prev_map, new_state.map
                 )
             self._states[provider_id] = new_state
             await self._dispatch(Event.STATE_UPDATE, provider_id, prev_state, new_state)
             return
 
-        # Only process payloads during a live match (skip warmup, menu, etc.)
+        # Only process payloads during a live map (skip warmup, menu, etc.)
         if new_state.map.phase != MapPhase.LIVE:
             return
 
@@ -285,7 +313,7 @@ class GSIServer:
         assert curr.map is not None
         prev_map = prev.map if prev else None
         # Fire on the first LIVE payload after warmup (prev is None) or after a
-        # previous match ended (prev_map.phase == GAMEOVER)
+        # previous map ended (prev_map.phase == GAMEOVER)
         if prev_map is None or prev_map.phase == MapPhase.GAMEOVER:
             await self._dispatch(Event.MAP_START, player_id, prev_map, curr.map)
 
@@ -326,14 +354,20 @@ class GSIServer:
 
         prev_player = prev.player if prev else None
 
-        curr_kills = curr.player.match_stats.kills
-        prev_kills = prev_player.match_stats.kills if prev_player else None
-        if prev_kills is not None and curr_kills > prev_kills:
+        prev_stats = prev_player.match_stats if prev_player else None
+        curr_stats = curr.player.match_stats
+
+        if prev_stats is not None and curr_stats.kills > prev_stats.kills:
             await self._dispatch(
-                Event.LOCAL_PLAYER_KILL,
-                player_id,
-                prev_player.match_stats if prev_player else None,
-                curr.player.match_stats,
+                Event.LOCAL_PLAYER_KILL, player_id, prev_stats, curr_stats
+            )
+        if prev_stats is not None and curr_stats.assists > prev_stats.assists:
+            await self._dispatch(
+                Event.LOCAL_PLAYER_ASSIST, player_id, prev_stats, curr_stats
+            )
+        if prev_stats is not None and curr_stats.mvps > prev_stats.mvps:
+            await self._dispatch(
+                Event.LOCAL_PLAYER_MVP, player_id, prev_stats, curr_stats
             )
 
         curr_health = curr.player.state.health

@@ -179,12 +179,28 @@ async def handler(player_id: str, old: RoundState | None, new: RoundState) -> No
 async def handler(player_id: str, old: RoundState | None, new: RoundState) -> None: ...
 ```
 
+#### Map events
+
+```python
+@gsi.on_map_start
+async def handler(player_id: str, old: MapState | None, new: MapState) -> None: ...
+
+@gsi.on_map_end
+async def handler(player_id: str, old: MapState | None, new: MapState) -> None: ...
+```
+
 #### Local player events
 
 These events are scoped to the tracked players passed at initialization.
 
 ```python
 @gsi.on_local_player_kill
+async def handler(player_id: str, old: PlayerMatchStats | None, new: PlayerMatchStats) -> None: ...
+
+@gsi.on_local_player_assist
+async def handler(player_id: str, old: PlayerMatchStats | None, new: PlayerMatchStats) -> None: ...
+
+@gsi.on_local_player_mvp
 async def handler(player_id: str, old: PlayerMatchStats | None, new: PlayerMatchStats) -> None: ...
 
 @gsi.on_local_player_death
