@@ -416,6 +416,76 @@ class TestPlayerEvents:
         await post(client, fixtures["after_kill"])
         assert len(calls) == 0
 
+    async def test_assist_fires(
+        self, gsi: GSIServer, client: AsyncClient, fixtures: dict[str, Any]
+    ) -> None:
+        calls: list[tuple[str, PlayerMatchStats | None, PlayerMatchStats]] = []
+
+        @gsi.on_local_player_assist
+        async def handler(
+            player_id: str, old: PlayerMatchStats | None, new: PlayerMatchStats
+        ) -> None:
+            calls.append((player_id, old, new))
+
+        await post(client, fixtures["before_assist"])
+        await post(client, fixtures["after_assist"])
+
+        assert len(calls) == 1
+        pid, old, new = calls[0]
+        assert pid == PLAYER_ID
+        assert old is not None
+        assert new.assists == old.assists + 1
+
+    async def test_assist_not_fired_on_first_payload(
+        self, gsi: GSIServer, client: AsyncClient, fixtures: dict[str, Any]
+    ) -> None:
+        """Assist requires a prior state to compare against."""
+        calls: list[tuple[str, PlayerMatchStats | None, PlayerMatchStats]] = []
+
+        @gsi.on_local_player_assist
+        async def handler(
+            player_id: str, old: PlayerMatchStats | None, new: PlayerMatchStats
+        ) -> None:
+            calls.append((player_id, old, new))
+
+        await post(client, fixtures["after_assist"])
+        assert len(calls) == 0
+
+    async def test_mvp_fires(
+        self, gsi: GSIServer, client: AsyncClient, fixtures: dict[str, Any]
+    ) -> None:
+        calls: list[tuple[str, PlayerMatchStats | None, PlayerMatchStats]] = []
+
+        @gsi.on_local_player_mvp
+        async def handler(
+            player_id: str, old: PlayerMatchStats | None, new: PlayerMatchStats
+        ) -> None:
+            calls.append((player_id, old, new))
+
+        await post(client, fixtures["before_mvp"])
+        await post(client, fixtures["after_mvp"])
+
+        assert len(calls) == 1
+        pid, old, new = calls[0]
+        assert pid == PLAYER_ID
+        assert old is not None
+        assert new.mvps == old.mvps + 1
+
+    async def test_mvp_not_fired_on_first_payload(
+        self, gsi: GSIServer, client: AsyncClient, fixtures: dict[str, Any]
+    ) -> None:
+        """MVP requires a prior state to compare against."""
+        calls: list[tuple[str, PlayerMatchStats | None, PlayerMatchStats]] = []
+
+        @gsi.on_local_player_mvp
+        async def handler(
+            player_id: str, old: PlayerMatchStats | None, new: PlayerMatchStats
+        ) -> None:
+            calls.append((player_id, old, new))
+
+        await post(client, fixtures["after_mvp"])
+        assert len(calls) == 0
+
     async def test_death_fires(
         self, gsi: GSIServer, client: AsyncClient, fixtures: dict[str, Any]
     ) -> None:

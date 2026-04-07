@@ -853,6 +853,318 @@
       "bomb": "exploded"
     }
   },
+  "before_assist": {
+    "provider": {
+      "name": "Counter-Strike: Global Offensive",
+      "appid": 730,
+      "version": 14141,
+      "steamid": "76561198000000000",
+      "timestamp": 1775425260
+    },
+    "player": {
+      "steamid": "76561198000000000",
+      "name": "TestPlayer",
+      "observer_slot": 5,
+      "team": "T",
+      "activity": "playing",
+      "state": {
+        "health": 100,
+        "armor": 0,
+        "helmet": false,
+        "flashed": 0,
+        "smoked": 0,
+        "burning": 0,
+        "money": 3400,
+        "round_kills": 0,
+        "round_killhs": 0,
+        "equip_value": 700
+      },
+      "match_stats": {
+        "kills": 1,
+        "assists": 0,
+        "deaths": 1,
+        "mvps": 1,
+        "score": 9
+      },
+      "weapons": {
+        "weapon_0": {
+          "name": "weapon_knife_t",
+          "paintkit": "default",
+          "type": "Knife",
+          "state": "holstered"
+        },
+        "weapon_1": {
+          "name": "weapon_deagle",
+          "paintkit": "cu_desert_eagle_corroden",
+          "type": "Pistol",
+          "ammo_clip": 7,
+          "ammo_clip_max": 7,
+          "ammo_reserve": 0,
+          "state": "active"
+        }
+      }
+    },
+    "map": {
+      "mode": "competitive",
+      "name": "de_dust2",
+      "phase": "live",
+      "round": 2,
+      "team_ct": {
+        "score": 0,
+        "consecutive_round_losses": 2,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "team_t": {
+        "score": 1,
+        "consecutive_round_losses": 0,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "num_matches_to_win_series": 0,
+      "round_wins": {
+        "1": "t_win_bomb"
+      }
+    },
+    "round": {
+      "phase": "live"
+    }
+  },
+  "after_assist": {
+    "provider": {
+      "name": "Counter-Strike: Global Offensive",
+      "appid": 730,
+      "version": 14141,
+      "steamid": "76561198000000000",
+      "timestamp": 1775425262
+    },
+    "player": {
+      "steamid": "76561198000000000",
+      "name": "TestPlayer",
+      "observer_slot": 5,
+      "team": "T",
+      "activity": "playing",
+      "state": {
+        "health": 100,
+        "armor": 0,
+        "helmet": false,
+        "flashed": 0,
+        "smoked": 0,
+        "burning": 0,
+        "money": 3700,
+        "round_kills": 0,
+        "round_killhs": 0,
+        "equip_value": 700
+      },
+      "match_stats": {
+        "kills": 1,
+        "assists": 1,
+        "deaths": 1,
+        "mvps": 1,
+        "score": 10
+      },
+      "weapons": {
+        "weapon_0": {
+          "name": "weapon_knife_t",
+          "paintkit": "default",
+          "type": "Knife",
+          "state": "holstered"
+        },
+        "weapon_1": {
+          "name": "weapon_deagle",
+          "paintkit": "cu_desert_eagle_corroden",
+          "type": "Pistol",
+          "ammo_clip": 6,
+          "ammo_clip_max": 7,
+          "ammo_reserve": 0,
+          "state": "active"
+        }
+      }
+    },
+    "map": {
+      "mode": "competitive",
+      "name": "de_dust2",
+      "phase": "live",
+      "round": 2,
+      "team_ct": {
+        "score": 0,
+        "consecutive_round_losses": 2,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "team_t": {
+        "score": 1,
+        "consecutive_round_losses": 0,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "num_matches_to_win_series": 0,
+      "round_wins": {
+        "1": "t_win_bomb"
+      }
+    },
+    "round": {
+      "phase": "live"
+    }
+  },
+  "before_mvp": {
+    "provider": {
+      "name": "Counter-Strike: Global Offensive",
+      "appid": 730,
+      "version": 14141,
+      "steamid": "76561198000000000",
+      "timestamp": 1775425270
+    },
+    "player": {
+      "steamid": "76561198000000000",
+      "name": "TestPlayer",
+      "observer_slot": 5,
+      "team": "T",
+      "activity": "playing",
+      "state": {
+        "health": 0,
+        "armor": 0,
+        "helmet": false,
+        "flashed": 0,
+        "smoked": 0,
+        "burning": 0,
+        "money": 3700,
+        "round_kills": 1,
+        "round_killhs": 0,
+        "equip_value": 700
+      },
+      "match_stats": {
+        "kills": 2,
+        "assists": 1,
+        "deaths": 2,
+        "mvps": 1,
+        "score": 12
+      },
+      "weapons": {
+        "weapon_0": {
+          "name": "weapon_knife_t",
+          "paintkit": "default",
+          "type": "Knife",
+          "state": "holstered"
+        },
+        "weapon_1": {
+          "name": "weapon_deagle",
+          "paintkit": "cu_desert_eagle_corroden",
+          "type": "Pistol",
+          "ammo_clip": 5,
+          "ammo_clip_max": 7,
+          "ammo_reserve": 0,
+          "state": "active"
+        }
+      }
+    },
+    "map": {
+      "mode": "competitive",
+      "name": "de_dust2",
+      "phase": "live",
+      "round": 3,
+      "team_ct": {
+        "score": 0,
+        "consecutive_round_losses": 3,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "team_t": {
+        "score": 2,
+        "consecutive_round_losses": 0,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "num_matches_to_win_series": 0,
+      "round_wins": {
+        "1": "t_win_bomb",
+        "2": "t_win_elimination"
+      }
+    },
+    "round": {
+      "phase": "over",
+      "win_team": "T"
+    }
+  },
+  "after_mvp": {
+    "provider": {
+      "name": "Counter-Strike: Global Offensive",
+      "appid": 730,
+      "version": 14141,
+      "steamid": "76561198000000000",
+      "timestamp": 1775425272
+    },
+    "player": {
+      "steamid": "76561198000000000",
+      "name": "TestPlayer",
+      "observer_slot": 5,
+      "team": "T",
+      "activity": "playing",
+      "state": {
+        "health": 0,
+        "armor": 0,
+        "helmet": false,
+        "flashed": 0,
+        "smoked": 0,
+        "burning": 0,
+        "money": 3700,
+        "round_kills": 1,
+        "round_killhs": 0,
+        "equip_value": 700
+      },
+      "match_stats": {
+        "kills": 2,
+        "assists": 1,
+        "deaths": 2,
+        "mvps": 2,
+        "score": 15
+      },
+      "weapons": {
+        "weapon_0": {
+          "name": "weapon_knife_t",
+          "paintkit": "default",
+          "type": "Knife",
+          "state": "holstered"
+        },
+        "weapon_1": {
+          "name": "weapon_deagle",
+          "paintkit": "cu_desert_eagle_corroden",
+          "type": "Pistol",
+          "ammo_clip": 5,
+          "ammo_clip_max": 7,
+          "ammo_reserve": 0,
+          "state": "active"
+        }
+      }
+    },
+    "map": {
+      "mode": "competitive",
+      "name": "de_dust2",
+      "phase": "live",
+      "round": 3,
+      "team_ct": {
+        "score": 0,
+        "consecutive_round_losses": 3,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "team_t": {
+        "score": 2,
+        "consecutive_round_losses": 0,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "num_matches_to_win_series": 0,
+      "round_wins": {
+        "1": "t_win_bomb",
+        "2": "t_win_elimination"
+      }
+    },
+    "round": {
+      "phase": "over",
+      "win_team": "T"
+    }
+  },
   "before_match_end": {
     "provider": {
       "name": "Counter-Strike: Global Offensive",
