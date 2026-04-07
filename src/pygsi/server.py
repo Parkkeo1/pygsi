@@ -39,8 +39,8 @@ class Event(StrEnum):
     LOCAL_PLAYER_KILL = "on_local_player_kill"
     LOCAL_PLAYER_DEATH = "on_local_player_death"
     STATE_UPDATE = "on_state_update"
-    MATCH_END = "on_match_end"
     MAP_START = "on_map_start"
+    MAP_END = "on_map_end"
 
 
 class GSIServer:
@@ -182,7 +182,7 @@ class GSIServer:
         return fn
 
     def on_map_start(self, fn: Handler) -> Handler:
-        """Fires when a new map begins (first live payload after warmup or prior match).
+        """Fires when a new map begins (first live payload after warmup or prior map).
 
         Handler signature:
             async def handler(player_id: str, old: MapState | None, new: MapState)
@@ -190,13 +190,13 @@ class GSIServer:
         self._handlers[Event.MAP_START].append(fn)
         return fn
 
-    def on_match_end(self, fn: Handler) -> Handler:
-        """Fires when map phase transitions to gameover (match is over).
+    def on_map_end(self, fn: Handler) -> Handler:
+        """Fires when map phase transitions to gameover (map is over).
 
         Handler signature:
             async def handler(player_id: str, old: MapState | None, new: MapState)
         """
-        self._handlers[Event.MATCH_END].append(fn)
+        self._handlers[Event.MAP_END].append(fn)
         return fn
 
     # --- Server ---
@@ -250,7 +250,7 @@ class GSIServer:
             prev_map = prev_state.map if prev_state else None
             if prev_map is not None and prev_map.phase == MapPhase.LIVE:
                 await self._dispatch(
-                    Event.MATCH_END, provider_id, prev_map, new_state.map
+                    Event.MAP_END, provider_id, prev_map, new_state.map
                 )
             self._states[provider_id] = new_state
             await self._dispatch(Event.STATE_UPDATE, provider_id, prev_state, new_state)

@@ -512,13 +512,13 @@ class TestMapStartEvent:
         assert old_second.phase == MapPhase.GAMEOVER
 
 
-class TestMatchEndEvent:
+class TestMapEndEvent:
     async def test_match_end_fires(
         self, gsi: GSIServer, client: AsyncClient, fixtures: dict[str, Any]
     ) -> None:
         calls: list[tuple[str, MapState | None, MapState]] = []
 
-        @gsi.on_match_end
+        @gsi.on_map_end
         async def handler(player_id: str, old: MapState | None, new: MapState) -> None:
             calls.append((player_id, old, new))
 
@@ -537,7 +537,7 @@ class TestMatchEndEvent:
     ) -> None:
         calls: list[tuple[str, MapState | None, MapState]] = []
 
-        @gsi.on_match_end
+        @gsi.on_map_end
         async def handler(player_id: str, old: MapState | None, new: MapState) -> None:
             calls.append((player_id, old, new))
 
@@ -550,7 +550,7 @@ class TestMatchEndEvent:
     ) -> None:
         calls: list[tuple[str, MapState | None, MapState]] = []
 
-        @gsi.on_match_end
+        @gsi.on_map_end
         async def handler(player_id: str, old: MapState | None, new: MapState) -> None:
             calls.append((player_id, old, new))
 
