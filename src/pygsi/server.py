@@ -15,6 +15,7 @@ from .models import (
     BombStatus,
     GameState,
     MapPhase,
+    MapState,
     PlayerMatchStats,
     PlayerState,
     RoundPhase,
@@ -26,7 +27,7 @@ logger = logging.getLogger(__name__)
 Handler = Callable[..., Coroutine[Any, Any, None]]
 
 # Union of all state slices passed to event handlers
-_Slice = GameState | RoundState | PlayerMatchStats | PlayerState
+_Slice = GameState | MapState | RoundState | PlayerMatchStats | PlayerState
 
 
 class Event(StrEnum):
@@ -38,6 +39,8 @@ class Event(StrEnum):
     LOCAL_PLAYER_KILL = "on_local_player_kill"
     LOCAL_PLAYER_DEATH = "on_local_player_death"
     STATE_UPDATE = "on_state_update"
+    MATCH_END = "on_match_end"
+    MAP_START = "on_map_start"
 
 
 class GSIServer:
@@ -178,6 +181,24 @@ class GSIServer:
         self._handlers[Event.STATE_UPDATE].append(fn)
         return fn
 
+    def on_map_start(self, fn: Handler) -> Handler:
+        """Fires when a new map begins (first live payload after warmup or prior match).
+
+        Handler signature:
+            async def handler(player_id: str, old: MapState | None, new: MapState)
+        """
+        self._handlers[Event.MAP_START].append(fn)
+        return fn
+
+    def on_match_end(self, fn: Handler) -> Handler:
+        """Fires when map phase transitions to gameover (match is over).
+
+        Handler signature:
+            async def handler(player_id: str, old: MapState | None, new: MapState)
+        """
+        self._handlers[Event.MATCH_END].append(fn)
+        return fn
+
     # --- Server ---
 
     def run(self) -> None:
@@ -215,13 +236,28 @@ class GSIServer:
     async def _handle_payload(self, payload: GSIPayload) -> None:
         new_state = payload.to_game_state()
 
-        # Only process payloads during a live match (skip warmup, menu, etc.)
-        if new_state.map is None or new_state.map.phase != MapPhase.LIVE:
+        if new_state.map is None:
             return
 
         # Identify which player sent this payload via the provider block
         provider_id = payload.provider_steamid
         if provider_id is None or provider_id not in self._player_ids:
+            return
+
+        # Match end: fire event and stop — don't fire other events
+        if new_state.map.phase == MapPhase.GAMEOVER:
+            prev_state = self._states[provider_id]
+            prev_map = prev_state.map if prev_state else None
+            if prev_map is not None and prev_map.phase == MapPhase.LIVE:
+                await self._dispatch(
+                    Event.MATCH_END, provider_id, prev_map, new_state.map
+                )
+            self._states[provider_id] = new_state
+            await self._dispatch(Event.STATE_UPDATE, provider_id, prev_state, new_state)
+            return
+
+        # Only process payloads during a live match (skip warmup, menu, etc.)
+        if new_state.map.phase != MapPhase.LIVE:
             return
 
         # After death, CS2 sends the spectated teammate's data — null it out
@@ -238,9 +274,20 @@ class GSIServer:
         self, player_id: str, prev: GameState | None, curr: GameState
     ) -> None:
         await self._dispatch(Event.STATE_UPDATE, player_id, prev, curr)
+        await self._handle_map_events(player_id, prev, curr)
         await self._handle_round_events(player_id, prev, curr)
         await self._handle_bomb_events(player_id, prev, curr)
         await self._handle_player_events(player_id, prev, curr)
+
+    async def _handle_map_events(
+        self, player_id: str, prev: GameState | None, curr: GameState
+    ) -> None:
+        assert curr.map is not None
+        prev_map = prev.map if prev else None
+        # Fire on the first LIVE payload after warmup (prev is None) or after a
+        # previous match ended (prev_map.phase == GAMEOVER)
+        if prev_map is None or prev_map.phase == MapPhase.GAMEOVER:
+            await self._dispatch(Event.MAP_START, player_id, prev_map, curr.map)
 
     async def _handle_round_events(
         self, player_id: str, prev: GameState | None, curr: GameState

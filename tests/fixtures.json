@@ -852,5 +852,65 @@
       "win_team": "T",
       "bomb": "exploded"
     }
+  },
+  "before_match_end": {
+    "provider": {
+      "name": "Counter-Strike: Global Offensive",
+      "appid": 730,
+      "version": 14141,
+      "steamid": "76561198000000000",
+      "timestamp": 1775425300
+    },
+    "map": {
+      "mode": "competitive",
+      "name": "de_dust2",
+      "phase": "live",
+      "round": 24,
+      "team_ct": {
+        "score": 13,
+        "consecutive_round_losses": 0,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "team_t": {
+        "score": 11,
+        "consecutive_round_losses": 2,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "num_matches_to_win_series": 0
+    },
+    "round": {
+      "phase": "over",
+      "win_team": "CT"
+    }
+  },
+  "match_end": {
+    "provider": {
+      "name": "Counter-Strike: Global Offensive",
+      "appid": 730,
+      "version": 14141,
+      "steamid": "76561198000000000",
+      "timestamp": 1775425305
+    },
+    "map": {
+      "mode": "competitive",
+      "name": "de_dust2",
+      "phase": "gameover",
+      "round": 24,
+      "team_ct": {
+        "score": 13,
+        "consecutive_round_losses": 0,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "team_t": {
+        "score": 11,
+        "consecutive_round_losses": 2,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0
+      },
+      "num_matches_to_win_series": 0
+    }
   }
 }
