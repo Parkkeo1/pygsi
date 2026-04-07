@@ -244,7 +244,7 @@ class GSIServer:
         if provider_id is None or provider_id not in self._player_ids:
             return
 
-        # Match end: fire event and stop — don't fire other events
+        # map end: fire event and stop — don't fire other events
         if new_state.map.phase == MapPhase.GAMEOVER:
             prev_state = self._states[provider_id]
             prev_map = prev_state.map if prev_state else None
@@ -256,7 +256,7 @@ class GSIServer:
             await self._dispatch(Event.STATE_UPDATE, provider_id, prev_state, new_state)
             return
 
-        # Only process payloads during a live match (skip warmup, menu, etc.)
+        # Only process payloads during a live map (skip warmup, menu, etc.)
         if new_state.map.phase != MapPhase.LIVE:
             return
 
@@ -285,7 +285,7 @@ class GSIServer:
         assert curr.map is not None
         prev_map = prev.map if prev else None
         # Fire on the first LIVE payload after warmup (prev is None) or after a
-        # previous match ended (prev_map.phase == GAMEOVER)
+        # previous map ended (prev_map.phase == GAMEOVER)
         if prev_map is None or prev_map.phase == MapPhase.GAMEOVER:
             await self._dispatch(Event.MAP_START, player_id, prev_map, curr.map)
 
