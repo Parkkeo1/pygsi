@@ -19,6 +19,7 @@ from pygsi import (
     GameState,
     GSIServer,
     MapPhase,
+    MapState,
     PlayerMatchStats,
     PlayerState,
     RoundPhase,
@@ -455,6 +456,109 @@ class TestPlayerEvents:
 
         await post(client, fixtures["round_end_bomb_explode_death"])
         assert len(calls) == 1  # still 1, not 2
+
+
+class TestMapStartEvent:
+    async def test_map_start_fires_on_first_live_payload(
+        self, gsi: GSIServer, client: AsyncClient, fixtures: dict[str, Any]
+    ) -> None:
+        calls: list[tuple[str, MapState | None, MapState]] = []
+
+        @gsi.on_map_start
+        async def handler(player_id: str, old: MapState | None, new: MapState) -> None:
+            calls.append((player_id, old, new))
+
+        await post(client, fixtures["freezetime_before_round_start"])
+
+        assert len(calls) == 1
+        pid, old, new = calls[0]
+        assert pid == PLAYER_ID
+        assert old is None
+        assert new.phase == MapPhase.LIVE
+
+    async def test_map_start_not_refired_on_subsequent_live_payloads(
+        self, gsi: GSIServer, client: AsyncClient, fixtures: dict[str, Any]
+    ) -> None:
+        calls: list[tuple[str, MapState | None, MapState]] = []
+
+        @gsi.on_map_start
+        async def handler(player_id: str, old: MapState | None, new: MapState) -> None:
+            calls.append((player_id, old, new))
+
+        await post(client, fixtures["freezetime_before_round_start"])
+        await post(client, fixtures["round_start"])
+        await post(client, fixtures["mid_round"])
+
+        assert len(calls) == 1
+
+    async def test_map_start_fires_after_match_end(
+        self, gsi: GSIServer, client: AsyncClient, fixtures: dict[str, Any]
+    ) -> None:
+        calls: list[tuple[str, MapState | None, MapState]] = []
+
+        @gsi.on_map_start
+        async def handler(player_id: str, old: MapState | None, new: MapState) -> None:
+            calls.append((player_id, old, new))
+
+        await post(client, fixtures["before_match_end"])
+        await post(client, fixtures["match_end"])
+        await post(client, fixtures["freezetime_before_round_start"])
+
+        assert len(calls) == 2
+        _, old_first, _ = calls[0]
+        _, old_second, _ = calls[1]
+        assert old_first is None
+        assert old_second is not None
+        assert old_second.phase == MapPhase.GAMEOVER
+
+
+class TestMatchEndEvent:
+    async def test_match_end_fires(
+        self, gsi: GSIServer, client: AsyncClient, fixtures: dict[str, Any]
+    ) -> None:
+        calls: list[tuple[str, MapState | None, MapState]] = []
+
+        @gsi.on_match_end
+        async def handler(player_id: str, old: MapState | None, new: MapState) -> None:
+            calls.append((player_id, old, new))
+
+        await post(client, fixtures["before_match_end"])
+        await post(client, fixtures["match_end"])
+
+        assert len(calls) == 1
+        pid, old, new = calls[0]
+        assert pid == PLAYER_ID
+        assert old is not None
+        assert old.phase == MapPhase.LIVE
+        assert new.phase == MapPhase.GAMEOVER
+
+    async def test_match_end_not_fired_without_prior_live_state(
+        self, gsi: GSIServer, client: AsyncClient, fixtures: dict[str, Any]
+    ) -> None:
+        calls: list[tuple[str, MapState | None, MapState]] = []
+
+        @gsi.on_match_end
+        async def handler(player_id: str, old: MapState | None, new: MapState) -> None:
+            calls.append((player_id, old, new))
+
+        await post(client, fixtures["match_end"])
+
+        assert len(calls) == 0
+
+    async def test_match_end_not_refired(
+        self, gsi: GSIServer, client: AsyncClient, fixtures: dict[str, Any]
+    ) -> None:
+        calls: list[tuple[str, MapState | None, MapState]] = []
+
+        @gsi.on_match_end
+        async def handler(player_id: str, old: MapState | None, new: MapState) -> None:
+            calls.append((player_id, old, new))
+
+        await post(client, fixtures["before_match_end"])
+        await post(client, fixtures["match_end"])
+        await post(client, fixtures["match_end"])
+
+        assert len(calls) == 1
 
 
 class TestStateUpdateEvent:
