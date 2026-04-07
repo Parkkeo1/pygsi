@@ -46,7 +46,11 @@ All handlers receive `(player_id, old, new)` — the steamid of the player whose
 | `on_bomb_defused` | `round.bomb` → `defused` | `(str, RoundState \| None, RoundState)` |
 | `on_bomb_exploded` | `round.bomb` → `exploded` | `(str, RoundState \| None, RoundState)` |
 | `on_local_player_kill` | `player.match_stats.kills` increases | `(str, PlayerMatchStats \| None, PlayerMatchStats)` |
+| `on_local_player_assist` | `player.match_stats.assists` increases | `(str, PlayerMatchStats \| None, PlayerMatchStats)` |
+| `on_local_player_mvp` | `player.match_stats.mvps` increases | `(str, PlayerMatchStats \| None, PlayerMatchStats)` |
 | `on_local_player_death` | `player.state.health` → `0` | `(str, PlayerState \| None, PlayerState)` |
+| `on_map_start` | First live payload after warmup or prior map | `(str, MapState \| None, MapState)` |
+| `on_map_end` | `map.phase` → `gameover` | `(str, MapState \| None, MapState)` |
 | `on_state_update` | Every valid payload | `(str, GameState \| None, GameState)` |
 
 Kill victim information is not available — CS2 does not expose it to active players.
@@ -77,7 +81,7 @@ Integration tests live in `tests/` and use real CS2 GSI payloads captured from a
 - **State parsing** — all model fields correctly parsed from raw JSON (map, round, player state, match stats, enums)
 - **Payload filtering** — warmup/menu payloads ignored, spectating teammate nulls player, filtered payloads don't wipe existing state
 - **State transitions** — state updates correctly across sequential payloads
-- **Event handlers** — all 8 event types fire on correct transitions with correct `(player_id, old, new)` arguments
+- **Event handlers** — all 12 event types fire on correct transitions with correct `(player_id, old, new)` arguments
 - **Edge cases** — events not fired without required prior state, death not re-fired when already dead, bomb exploded requires prior planted
 - **Multiple events** — single payload can trigger multiple events simultaneously, multiple handlers per event
 - **Multi-player** — per-player state tracking, events fire with correct player_id, unknown players ignored, `gsi.state` raises for multi-player setups, spectating routes correctly via provider.steamid

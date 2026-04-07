@@ -37,6 +37,8 @@ class Event(StrEnum):
     BOMB_DEFUSED = "on_bomb_defused"
     BOMB_EXPLODED = "on_bomb_exploded"
     LOCAL_PLAYER_KILL = "on_local_player_kill"
+    LOCAL_PLAYER_ASSIST = "on_local_player_assist"
+    LOCAL_PLAYER_MVP = "on_local_player_mvp"
     LOCAL_PLAYER_DEATH = "on_local_player_death"
     STATE_UPDATE = "on_state_update"
     MAP_START = "on_map_start"
@@ -161,6 +163,32 @@ class GSIServer:
             )
         """
         self._handlers[Event.LOCAL_PLAYER_KILL].append(fn)
+        return fn
+
+    def on_local_player_assist(self, fn: Handler) -> Handler:
+        """Fires when the tracked player registers an assist.
+
+        Handler signature:
+            async def handler(
+                player_id: str,
+                old: PlayerMatchStats | None,
+                new: PlayerMatchStats,
+            )
+        """
+        self._handlers[Event.LOCAL_PLAYER_ASSIST].append(fn)
+        return fn
+
+    def on_local_player_mvp(self, fn: Handler) -> Handler:
+        """Fires when the tracked player is awarded MVP.
+
+        Handler signature:
+            async def handler(
+                player_id: str,
+                old: PlayerMatchStats | None,
+                new: PlayerMatchStats,
+            )
+        """
+        self._handlers[Event.LOCAL_PLAYER_MVP].append(fn)
         return fn
 
     def on_local_player_death(self, fn: Handler) -> Handler:
@@ -326,14 +354,20 @@ class GSIServer:
 
         prev_player = prev.player if prev else None
 
-        curr_kills = curr.player.match_stats.kills
-        prev_kills = prev_player.match_stats.kills if prev_player else None
-        if prev_kills is not None and curr_kills > prev_kills:
+        prev_stats = prev_player.match_stats if prev_player else None
+        curr_stats = curr.player.match_stats
+
+        if prev_stats is not None and curr_stats.kills > prev_stats.kills:
             await self._dispatch(
-                Event.LOCAL_PLAYER_KILL,
-                player_id,
-                prev_player.match_stats if prev_player else None,
-                curr.player.match_stats,
+                Event.LOCAL_PLAYER_KILL, player_id, prev_stats, curr_stats
+            )
+        if prev_stats is not None and curr_stats.assists > prev_stats.assists:
+            await self._dispatch(
+                Event.LOCAL_PLAYER_ASSIST, player_id, prev_stats, curr_stats
+            )
+        if prev_stats is not None and curr_stats.mvps > prev_stats.mvps:
+            await self._dispatch(
+                Event.LOCAL_PLAYER_MVP, player_id, prev_stats, curr_stats
             )
 
         curr_health = curr.player.state.health
