@@ -253,6 +253,7 @@ class GSIServer:
                     Event.MATCH_END, provider_id, prev_map, new_state.map
                 )
             self._states[provider_id] = new_state
+            await self._dispatch(Event.STATE_UPDATE, provider_id, prev_state, new_state)
             return
 
         # Only process payloads during a live match (skip warmup, menu, etc.)
