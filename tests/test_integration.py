@@ -513,7 +513,7 @@ class TestMapStartEvent:
 
 
 class TestMapEndEvent:
-    async def test_match_end_fires(
+    async def test_map_end_fires(
         self, gsi: GSIServer, client: AsyncClient, fixtures: dict[str, Any]
     ) -> None:
         calls: list[tuple[str, MapState | None, MapState]] = []
@@ -532,7 +532,7 @@ class TestMapEndEvent:
         assert old.phase == MapPhase.LIVE
         assert new.phase == MapPhase.GAMEOVER
 
-    async def test_match_end_not_fired_without_prior_live_state(
+    async def test_map_end_not_fired_without_prior_live_state(
         self, gsi: GSIServer, client: AsyncClient, fixtures: dict[str, Any]
     ) -> None:
         calls: list[tuple[str, MapState | None, MapState]] = []
@@ -545,7 +545,7 @@ class TestMapEndEvent:
 
         assert len(calls) == 0
 
-    async def test_match_end_not_refired(
+    async def test_map_end_not_refired(
         self, gsi: GSIServer, client: AsyncClient, fixtures: dict[str, Any]
     ) -> None:
         calls: list[tuple[str, MapState | None, MapState]] = []
