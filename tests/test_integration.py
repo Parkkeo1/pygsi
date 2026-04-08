@@ -60,7 +60,7 @@ class TestStateParsing:
         assert state.map.name == "de_dust2"
         assert state.map.mode == "competitive"
         assert state.map.phase == MapPhase.LIVE
-        assert state.map.round == 4
+        assert state.map.round == 5
         assert state.map.team_ct_score == 2
         assert state.map.team_t_score == 2
         assert state.map.round_wins == {
@@ -180,7 +180,7 @@ class TestPayloadFiltering:
         # State should still be the mid_round state, not wiped
         assert gsi.state is not None
         assert gsi.state.map is not None
-        assert gsi.state.map.round == 4
+        assert gsi.state.map.round == 5
 
 
 # ---------------------------------------------------------------------------
@@ -198,7 +198,7 @@ class TestStateTransitions:
         assert gsi.state.round is not None
         assert gsi.state.round.phase == RoundPhase.FREEZETIME
         assert gsi.state.map is not None
-        assert gsi.state.map.round == 0
+        assert gsi.state.map.round == 1
 
         await post(client, fixtures["round_start"])
         state2 = gsi.state
@@ -210,7 +210,7 @@ class TestStateTransitions:
         state3 = gsi.state
         assert state3 is not None
         assert state3.map is not None
-        assert state3.map.round == 4
+        assert state3.map.round == 5
         assert state3.player is not None
         assert state3.player.match_stats.kills == 10
 
@@ -851,7 +851,7 @@ class TestMultiPlayer:
 
         assert gsi.states[PLAYER_ID] is not None
         assert gsi.states[PLAYER_ID].map is not None
-        assert gsi.states[PLAYER_ID].map.round == 4
+        assert gsi.states[PLAYER_ID].map.round == 5
 
         assert gsi.states[PLAYER_2_ID] is not None
         assert gsi.states[PLAYER_2_ID].round is not None
