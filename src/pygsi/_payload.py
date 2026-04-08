@@ -39,7 +39,7 @@ class _MapPayload(BaseModel):
             name=self.name,
             mode=self.mode,
             phase=self.phase,
-            round=self.round,
+            round=self.round + 1,
             team_ct_score=self.team_ct["score"],
             team_t_score=self.team_t["score"],
             round_wins=self.round_wins,
