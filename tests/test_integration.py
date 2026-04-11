@@ -134,6 +134,21 @@ class TestStateParsing:
         assert state.round is not None
         assert state.round.bomb == BombStatus.PLANTED
 
+    async def test_community_server_map_with_string_team_fields(
+        self, gsi: GSIServer, client: AsyncClient, fixtures: dict[str, Any]
+    ) -> None:
+        """Community servers may include string fields (e.g. name, flag) in team dicts.
+
+        Parsing should succeed and integer score values should be correctly extracted.
+        """
+        await post(client, fixtures["community_server_map"])
+
+        state = gsi.state
+        assert state is not None
+        assert state.map is not None
+        assert state.map.team_ct_score == 2
+        assert state.map.team_t_score == 2
+
 
 # ---------------------------------------------------------------------------
 # Payload filtering: warmup, menu, and non-target player payloads

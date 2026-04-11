@@ -23,6 +23,12 @@ from .models import (
 )
 
 
+class _TeamPayload(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+
+    score: int
+
+
 class _MapPayload(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
@@ -30,8 +36,8 @@ class _MapPayload(BaseModel):
     mode: str
     phase: MapPhase
     round: int
-    team_ct: dict[str, int | str]
-    team_t: dict[str, int | str]
+    team_ct: _TeamPayload
+    team_t: _TeamPayload
     round_wins: dict[str, str] = {}
 
     def to_public(self) -> MapState:
@@ -40,8 +46,8 @@ class _MapPayload(BaseModel):
             mode=self.mode,
             phase=self.phase,
             round=self.round + 1,
-            team_ct_score=self.team_ct["score"],
-            team_t_score=self.team_t["score"],
+            team_ct_score=self.team_ct.score,
+            team_t_score=self.team_t.score,
             round_wins=self.round_wins,
         )
 
