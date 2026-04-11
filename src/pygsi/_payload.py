@@ -30,8 +30,8 @@ class _MapPayload(BaseModel):
     mode: str
     phase: MapPhase
     round: int
-    team_ct: dict[str, int]
-    team_t: dict[str, int]
+    team_ct: dict[str, int | str]
+    team_t: dict[str, int | str]
     round_wins: dict[str, str] = {}
 
     def to_public(self) -> MapState:
