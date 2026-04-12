@@ -1224,5 +1224,104 @@
       },
       "num_matches_to_win_series": 0
     }
+  },
+  "community_server_map": {
+    "provider": {
+      "name": "Counter-Strike: Global Offensive",
+      "appid": 730,
+      "version": 14141,
+      "steamid": "76561198000000000",
+      "timestamp": 1775425084
+    },
+    "player": {
+      "steamid": "76561198000000000",
+      "name": "TestPlayer",
+      "observer_slot": 5,
+      "team": "T",
+      "activity": "playing",
+      "state": {
+        "health": 100,
+        "armor": 0,
+        "helmet": false,
+        "flashed": 0,
+        "smoked": 0,
+        "burning": 0,
+        "money": 5850,
+        "round_kills": 0,
+        "round_killhs": 0,
+        "equip_value": 2900
+      },
+      "match_stats": {
+        "kills": 10,
+        "assists": 1,
+        "deaths": 2,
+        "mvps": 2,
+        "score": 13
+      },
+      "weapons": {
+        "weapon_0": {
+          "name": "weapon_knife_t",
+          "paintkit": "default",
+          "type": "Knife",
+          "state": "holstered"
+        },
+        "weapon_1": {
+          "name": "weapon_glock",
+          "paintkit": "cu_glock-liquescent",
+          "type": "Pistol",
+          "ammo_clip": 20,
+          "ammo_clip_max": 20,
+          "ammo_reserve": 3,
+          "state": "holstered"
+        },
+        "weapon_2": {
+          "name": "weapon_ak47",
+          "paintkit": "sp_mesh_tan",
+          "type": "Rifle",
+          "ammo_clip": 26,
+          "ammo_clip_max": 30,
+          "ammo_reserve": 3,
+          "state": "active"
+        },
+        "weapon_3": {
+          "name": "weapon_c4",
+          "paintkit": "default",
+          "type": "C4",
+          "state": "holstered"
+        }
+      }
+    },
+    "map": {
+      "mode": "competitive",
+      "name": "de_dust2",
+      "phase": "live",
+      "round": 4,
+      "team_ct": {
+        "score": 2,
+        "consecutive_round_losses": 2,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0,
+        "name": "CounterTerrorists",
+        "flag": "de"
+      },
+      "team_t": {
+        "score": 2,
+        "consecutive_round_losses": 0,
+        "timeouts_remaining": 1,
+        "matches_won_this_series": 0,
+        "name": "Terrorists",
+        "flag": "us"
+      },
+      "num_matches_to_win_series": 0,
+      "round_wins": {
+        "1": "ct_win_elimination",
+        "2": "ct_win_elimination",
+        "3": "t_win_bomb",
+        "4": "t_win_elimination"
+      }
+    },
+    "round": {
+      "phase": "live"
+    }
   }
 }

@@ -75,9 +75,7 @@ class GSIServer:
         self.port = port
         self.host = host
 
-        self._states: dict[str, GameState | None] = dict.fromkeys(
-            self._player_ids
-        )
+        self._states: dict[str, GameState | None] = dict.fromkeys(self._player_ids)
         self._handlers: dict[Event, list[Handler]] = {event: [] for event in Event}
         self._app = self._build_app()
 
